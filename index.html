@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<title>היסוד הסודי</title>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #dff6ff, #fff2cc);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #174a7c;
+    font-size: 42px;
+}
+
+.subtitle {
+    font-size: 22px;
+    color: #444;
+}
+
+#question {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 25px auto;
+    width: 70%;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 12px 35px;
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2e7d32;
+}
+
+#elements {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+
+    background: linear-gradient(145deg,#ffffff,#e5f0ff);
+    border: 2px solid #4682b4;
+    border-radius: 15px;
+
+    width: 100px;
+    padding: 15px;
+    margin: 8px;
+
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+
+    font-size: 18px;
+}
+
+
+.symbol {
+    font-size: 30px;
+    font-weight: bold;
+    color: #c0392b;
+}
+
+
+.credit {
+
+    margin-top: 50px;
+    font-size: 14px;
+    color: #555;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>🔬 היסוד הסודי</h1>
+
+<p class="subtitle">
+בחרו יסוד אחד בלב.<br>
+ענו על השאלות והמחשב ינסה לגלות אותו!
+</p>
+
+
+<div id="question"></div>
+
+<div id="answers"></div>
+
+
+<h2>יסודות שנשארו במשחק:</h2>
+
+<div id="elements"></div>
+
+
+
+<div class="credit">
+עריכה: מילכה ברקו גרש
+</div>
+
+
+
+<script>
+
+
+let elements = [
+
+{
+name:"ברזל",
+symbol:"Fe",
+metal:true,
+magnetic:true,
+body:false
+},
+
+{
+name:"נחושת",
+symbol:"Cu",
+metal:true,
+magnetic:false,
+body:true
+},
+
+{
+name:"זהב",
+symbol:"Au",
+metal:true,
+magnetic:false,
+body:false
+},
+
+{
+name:"חמצן",
+symbol:"O",
+metal:false,
+magnetic:false,
+body:true
+},
+
+{
+name:"פחמן",
+symbol:"C",
+metal:false,
+magnetic:false,
+body:true
+},
+
+{
+name:"אלומיניום",
+symbol:"Al",
+metal:true,
+magnetic:false,
+body:false
+},
+
+{
+name:"ניקל",
+symbol:"Ni",
+metal:true,
+magnetic:true,
+body:false
+},
+
+{
+name:"קובלט",
+symbol:"Co",
+metal:true,
+magnetic:true,
+body:false
+}
+
+];
+
+
+
+let questions = [
+
+{
+text:"האם היסוד שלך הוא מתכת?",
+property:"metal"
+},
+
+{
+text:"האם היסוד שלך מגנטי?",
+property:"magnetic"
+},
+
+{
+text:"האם היסוד שלך נמצא בגוף האדם?",
+property:"body"
+}
+
+];
+
+
+
+let questionNumber = 0;
+
+
+
+function showElements(){
+
+let area=document.getElementById("elements");
+
+area.innerHTML="";
+
+
+elements.forEach(function(element){
+
+area.innerHTML +=
+
+`
+<div class="card">
+
+<div class="symbol">
+${element.symbol}
+</div>
+
+${element.name}
+
+</div>
+`;
+
+});
+
+
+}
+
+
+
+
+function askQuestion(){
+
+
+if(elements.length==1){
+
+document.getElementById("question").innerHTML=
+
+`
+<h2>🎉 מצאתי!</h2>
+<p>היסוד שבחרת הוא:</p>
+<h1>${elements[0].name} (${elements[0].symbol})</h1>
+`;
+
+document.getElementById("answers").innerHTML="";
+
+return;
+
+}
+
+
+
+let q=questions[questionNumber % questions.length];
+
+
+document.getElementById("question").innerHTML=
+
+`
+<h2>${q.text}</h2>
+`;
+
+
+
+document.getElementById("answers").innerHTML=
+
+`
+<button onclick="filterElements(true)">
+כן
+</button>
+
+<button onclick="filterElements(false)">
+לא
+</button>
+`;
+
+
+
+}
+
+
+
+function filterElements(answer){
+
+
+let q=questions[questionNumber % questions.length];
+
+
+elements =
+elements.filter(function(element){
+
+return element[q.property] == answer;
+
+});
+
+
+questionNumber++;
+
+
+showElements();
+
+askQuestion();
+
+
+}
+
+
+
+
+showElements();
+
+askQuestion();
+
+
+
+</script>
+
+
+</body>
+
+</html>
