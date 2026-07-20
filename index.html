@@ -387,7 +387,7 @@
       <div class="result-details">
         <div class="detail-pill"><div class="label">סימול כימי</div><div class="value" id="result-symbol"></div></div>
         <div class="detail-pill"><div class="label">מספר אטומי</div><div class="value" id="result-number"></div></div>
-        <div class="detail-pill"><div class="label">משפחה כימית</div><div class="value" id="result-family"></div></div>
+        <div class="detail-pill"><div class="label">קבוצה כימית</div><div class="value" id="result-family"></div></div>
         <div class="detail-pill"><div class="label">צבע אופייני</div><div class="value" id="result-color"></div></div>
       </div>
       <div class="use-box">💡 <strong>שימוש מעניין:</strong> <span id="result-use"></span></div>
@@ -414,19 +414,21 @@
 
 <script>
 // ===================== מאגר היסודות =====================
-// הגדרת משפחות כימיות (הטבלה המחזורית) - שם תצוגה + צבע לזיהוי חזותי
+// הגדרת קבוצות/סדרות כימיות בטבלה המחזורית - שם תצוגה + צבע לזיהוי חזותי
+// שימו לב: "משפחה" מציינת קבוצה בטבלה המחזורית בעלת תכונות דומות (כמו הלוגנים או גזים אצילים),
+// ואילו "סדרה" (כמו מתכות המעבר) היא טווח רחב יותר של יסודות שאינו נחשב משפחה אחת קלאסית.
 const FAMILIES = {
-  alkali:     { name: "מתכות אלקליות",              color: "#f39c12" },
-  alkaline:   { name: "מתכות אלקליות עפרוריות",     color: "#d35400" },
-  transition: { name: "מתכות מעבר",                  color: "#2980b9" },
-  other:      { name: "מתכות אחרות",                 color: "#16a085" },
-  metalloid:  { name: "מטלואידים",                   color: "#8e44ad" },
-  nonmetal:   { name: "אל-מתכות",                    color: "#27ae60" },
-  halogen:    { name: "הלוגנים",                      color: "#c0392b" },
-  noble:      { name: "גזים אצילים",                 color: "#c2185b" }
+  alkali:     { name: "משפחת המתכות האלקליות",             color: "#f39c12" },
+  alkaline:   { name: "משפחת המתכות האלקליות עפרוריות",    color: "#d35400" },
+  transition: { name: "סדרת מתכות המעבר",                   color: "#2980b9" },
+  other:      { name: "מתכות אחרות",                        color: "#16a085" },
+  metalloid:  { name: "קבוצת המטלואידים",                   color: "#8e44ad" },
+  nonmetal:   { name: "קבוצת האל-מתכות",                    color: "#27ae60" },
+  halogen:    { name: "משפחת ההלוגנים",                     color: "#c0392b" },
+  noble:      { name: "משפחת הגזים האצילים",                color: "#c2185b" }
 };
 
-// קטגוריות שימוש עיקריות
+// קטגוריות שימוש עיקריות - תווית קצרה לתצוגה
 const USES = {
   body: "גוף האדם ותזונה",
   electronics: "אלקטרוניקה וטכנולוגיה",
@@ -436,6 +438,18 @@ const USES = {
   medical: "רפואה וחיטוי",
   farming: "חקלאות ודשנים",
   energy: "אנרגיה ותחבורה"
+};
+
+// אותן קטגוריות עם דוגמה קונקרטית - משמש לניסוח השאלות כדי להפחית עמימות
+const USES_WITH_EXAMPLES = {
+  body: "גוף האדם ותזונה (למשל נשימה, עצמות או מלח בישול)",
+  electronics: "אלקטרוניקה וטכנולוגיה (למשל סוללות, שבבים או חוטי חשמל)",
+  jewelry: "תכשיטים ויוקרה (למשל טבעות, שרשראות או שעונים יקרים)",
+  construction: "בנייה ותעשייה (למשל פלדה, כלי עבודה או מקדחים)",
+  household: "בית ומוצרי יומיום (למשל קופסאות שימורים, נורות או בלונים)",
+  medical: "רפואה וחיטוי (למשל חיטוי פצעים או משחת שיניים)",
+  farming: "חקלאות ודשנים",
+  energy: "אנרגיה ותחבורה (למשל דלק או מצברים לרכבים)"
 };
 
 const ELEMENTS = [
@@ -470,7 +484,7 @@ const ELEMENTS = [
   {name:"ברום", symbol:"Br", number:35, family:"halogen", metal:false, state:"liquid", magnetic:false, inBody:false, conducts:false, colorful:true, useCat:"medical", use:"ייצור חומרי חיטוי וכיבוי אש", color:"אדום-חום"},
   {name:"כסף", symbol:"Ag", number:47, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"jewelry", use:"תכשיטים וכלי אוכל יוקרתיים", color:"כסוף בוהק"},
   {name:"יוד", symbol:"I", number:53, family:"halogen", metal:false, state:"solid", magnetic:false, inBody:true, conducts:false, colorful:true, useCat:"medical", use:"חיטוי פצעים ותפקוד בלוטת התריס", color:"סגול-שחור"},
-  {name:"טונגסטן", symbol:"W", number:74, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"household", use:"חוטי להט בנורות ישנות", color:"אפור כהה"},
+  {name:"טונגסטן", symbol:"W", number:74, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"ייצור מקדחים וכלי חיתוך תעשייתיים קשים במיוחד", color:"אפור כהה"},
   {name:"פלטינה", symbol:"Pt", number:78, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"jewelry", use:"תכשיטים יקרים וזרזים במפלטי רכב", color:"לבן-כסוף"},
   {name:"זהב", symbol:"Au", number:79, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:true, useCat:"jewelry", use:"תכשיטים ורכיבים אלקטרוניים", color:"צהוב"},
   {name:"כספית", symbol:"Hg", number:80, family:"transition", metal:true, state:"liquid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"household", use:"מדי חום ישנים ומתגי חשמל", color:"כסוף נוזלי"},
@@ -514,7 +528,7 @@ function buildReferenceTable() {
   const table = document.getElementById("ref-table");
   const sorted = [...ELEMENTS].sort((a, b) => a.number - b.number);
   let html = `<thead><tr>
-    <th>יסוד</th><th>סימול</th><th>מס' אטומי</th><th>משפחה</th><th>סוג</th>
+    <th>יסוד</th><th>סימול</th><th>מס' אטומי</th><th>קבוצה/סדרה</th><th>סוג</th>
     <th>מצב צבירה</th><th>מגנטי</th><th>בגוף האדם</th><th>מוליך חשמל</th>
     <th>צבע</th><th>שימוש עיקרי</th>
   </tr></thead><tbody>`;
@@ -593,17 +607,17 @@ function getBestQuestion(list) {
   tryQuestion("conduct", "האם היסוד מוליך חשמל היטב (כמו בחוטי חשמל)?", e => e.conducts);
   tryQuestion("colorful", "האם ליסוד יש צבע בולט ומיוחד (לא אפור/כסוף)?", e => e.colorful);
 
-  // שאלות על משפחה כימית - כל משפחה שקיימת עדיין בין הנשארים
+  // שאלות על קבוצה/סדרה כימית - כל קטגוריה שקיימת עדיין בין הנשארים
   const familiesPresent = new Set(list.map(e => e.family));
   familiesPresent.forEach(famKey => {
-    const famName = FAMILIES[famKey].name;
-    tryQuestion("family:" + famKey, `האם היסוד שייך למשפחת ${famName}?`, e => e.family === famKey);
+    const famName = FAMILIES[famKey].name; // השם כבר כולל את המילה "משפחת"/"סדרת" בהתאם, או שם קטגוריה כללי
+    tryQuestion("family:" + famKey, `האם היסוד שייך ל${famName}?`, e => e.family === famKey);
   });
 
   // שאלות על תחום השימוש העיקרי - כל קטגוריה שקיימת עדיין בין הנשארים
   const usesPresent = new Set(list.map(e => e.useCat));
   usesPresent.forEach(useKey => {
-    const useName = USES[useKey];
+    const useName = USES_WITH_EXAMPLES[useKey];
     tryQuestion("use:" + useKey, `האם השימוש העיקרי של היסוד קשור ל${useName}?`, e => e.useCat === useKey);
   });
 
@@ -656,7 +670,18 @@ function answerQuestion(isYes) {
   }
 
   const before = remaining.map(e => e.symbol);
-  remaining = remaining.filter(e => currentQuestion.pred(e) === isYes);
+  const filtered = remaining.filter(e => currentQuestion.pred(e) === isYes);
+
+  if (filtered.length === 0) {
+    // התשובה סותרת תשובה קודמת - לא מבצעים סינון (כדי לא לאבד את היסוד שנבחר),
+    // ומציגים הודעה ידידותית לפני מעבר לשאלה אחרת
+    document.getElementById("question-text").textContent =
+      "🤔 התשובה הזו נראית לא תואמת לתשובה קודמת... בואו ננסה שאלה אחרת!";
+    setTimeout(() => { askNextQuestion(); }, 1400);
+    return;
+  }
+
+  remaining = filtered;
   const after = new Set(remaining.map(e => e.symbol));
   const eliminatedNow = before.filter(sym => !after.has(sym));
 
