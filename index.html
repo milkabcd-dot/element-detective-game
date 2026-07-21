@@ -326,7 +326,7 @@ footer{
 
 
 <script>
-  // =========================
+ // =========================
 // מאגר יסודות - חלק 2א
 // =========================
 
@@ -728,7 +728,7 @@ magnet:false,
 technology:false
 }
 },
-  {
+ {
 name:"טיטניום",
 symbol:"Ti",
 number:22,
@@ -1049,125 +1049,169 @@ technology:true
 }
 
 ];
-  // =========================
-// מנגנון המשחק - חלק 3
+ // =========================
+// חלק 3א - מנגנון המשחק המתוקן
 // =========================
 
+// שאלות זיהוי קונקרטיות
+// השאלות מבוססות על ידע ברור ולא על קטגוריות כלליות
 
-let remaining = [];
-let currentQuestion = null;
-
-
-// שאלות המשחק
 const questions = [
 
 {
-text:"האם היסוד הוא גז בטמפרטורת החדר?",
-check:e=>e.features.gas
+text:"האם היסוד הוא אחד משלושת הגזים העיקריים באוויר שאנחנו נושמים (חנקן, חמצן או ארגון)?",
+symbols:["N","O","Ar"]
 },
 
 {
-text:"האם היסוד הוא מתכת?",
-check:e=>e.features.metal
+text:"האם היסוד הוא הגז שהגוף שלנו צריך כדי לנשום?",
+symbols:["O"]
 },
 
 {
-text:"האם היסוד חשוב בגוף האדם?",
-check:e=>e.features.body
+text:"האם היסוד משמש למילוי בלוני גז מרחפים?",
+symbols:["He"]
 },
 
 {
-text:"האם משתמשים ביסוד בטכנולוגיה או בתעשייה?",
-check:e=>e.features.technology
+text:"האם היסוד משמש בשלטי ניאון זוהרים?",
+symbols:["Ne"]
+},
+
+{
+text:"האם היסוד משמש למילוי נורות חשמל?",
+symbols:["Ar"]
+},
+
+{
+text:"האם היסוד משמש לייצור תכשיטים יקרים?",
+symbols:["Au","Ag","Pt"]
+},
+
+{
+text:"האם היסוד משמש בסוללות נטענות?",
+symbols:["Li","Co","Ni"]
+},
+
+{
+text:"האם היסוד הוא מרכיב עיקרי במלח הבישול?",
+symbols:["Na","Cl"]
+},
+
+{
+text:"האם היסוד חשוב לבניית עצמות ושיניים?",
+symbols:["Ca","F","P"]
+},
+
+{
+text:"האם היסוד משמש לחיטוי מים או פצעים?",
+symbols:["Cl","I","Br"]
+},
+
+{
+text:"האם היסוד משמש בייצור זכוכית מיוחדת?",
+symbols:["Si","B"]
+},
+
+{
+text:"האם היסוד הוא חומר גלם חשוב לחוטי חשמל?",
+symbols:["Cu"]
+},
+
+{
+text:"האם היסוד משמש לציפוי מתכות כדי למנוע חלודה?",
+symbols:["Zn"]
+},
+
+{
+text:"האם היסוד משמש בייצור פלדת אל-חלד?",
+symbols:["Cr","Ni"]
+},
+
+{
+text:"האם היסוד משמש כדלק או מקור אנרגיה?",
+symbols:["H","C"]
+},
+
+{
+text:"האם היסוד משמש בייצור מטבעות?",
+symbols:["Cu","Ni","Ag"]
+},
+
+{
+text:"האם היסוד משמש בזיקוקים?",
+symbols:["Mg"]
+},
+
+{
+text:"האם היסוד משמש לייצור קופסאות שימורים ונייר כסף?",
+symbols:["Al"]
+},
+
+{
+text:"האם היסוד הוא מרכיב חשוב בדשנים?",
+symbols:["N","P","K"]
+},
+
+{
+text:"האם היסוד נמצא במולקולה שנושאת חמצן בדם?",
+symbols:["Fe"]
 },
 
 {
 text:"האם היסוד נמשך למגנט?",
-check:e=>e.features.magnet
+symbols:["Fe","Co","Ni"]
 }
 
 ];
 
 
-// הצגת רשימת יסודות במסך הפתיחה
+// משתני משחק
 
-function createElementList(){
+let remaining=[];
+let currentQuestion=null;
+let asked=[];
+// =========================
+// חלק 3ב - מנוע המשחק, כרטיס מידע ותוצאה
+// =========================
 
-let box=document.getElementById("elementsList");
 
-box.innerHTML="";
+// מציאת שאלה טובה שמפרידה בין היסודות שנשארו
 
-elements.forEach(e=>{
+function getNextQuestion(){
 
-let div=document.createElement("div");
+let available = questions.filter(q=>!asked.includes(q.text));
 
-div.className="element";
+let best = null;
+let bestDiff = Infinity;
 
-div.innerHTML=
-`
-<div class="symbol">${e.symbol}</div>
-<div class="name">${e.name}</div>
-<div>מספר אטומי: ${e.number}</div>
-`;
 
-box.appendChild(div);
+available.forEach(q=>{
 
-});
+let yes = remaining.filter(e=>
+q.symbols.includes(e.symbol)
+).length;
 
+let no = remaining.length - yes;
+
+
+// לא משתמשים בשאלות שלא מפרידות
+
+if(yes>0 && no>0){
+
+let diff=Math.abs(yes-no);
+
+if(diff<bestDiff){
+bestDiff=diff;
+best=q;
 }
 
-
-
-// פתיחת חלון המידע
-
-function showInfo(){
-
-let cards=document.getElementById("cards");
-
-cards.innerHTML="";
-
-
-elements.forEach(e=>{
-
-
-cards.innerHTML +=
-
-`
-
-<div class="card">
-
-<h2>${e.name} (${e.symbol})</h2>
-
-<p><b>מספר אטומי:</b> ${e.number}</p>
-
-<p>${e.summary}</p>
-
-<h3>עוד מידע:</h3>
-
-<p>
-${e.extra.join("<br>")}
-</p>
-
-
-</div>
-
-
-`;
+}
 
 });
 
 
-document.getElementById("modal").style.display="flex";
-
-}
-
-
-
-// סגירת מידע
-
-function closeInfo(){
-
-document.getElementById("modal").style.display="none";
+return best;
 
 }
 
@@ -1178,80 +1222,75 @@ document.getElementById("modal").style.display="none";
 function startGame(){
 
 remaining=[...elements];
+asked=[];
 
 document.getElementById("start").classList.remove("active");
-
 document.getElementById("game").classList.add("active");
 
-askQuestion();
+showQuestion();
 
 }
 
 
 
-// בחירת שאלה
+// הצגת שאלה
 
-function askQuestion(){
+function showQuestion(){
 
 if(remaining.length===1){
 
 showResult(remaining[0]);
-
 return;
 
 }
 
 
-// בחירה אקראית של שאלה
-
-currentQuestion=
-questions[Math.floor(Math.random()*questions.length)];
+let q=getNextQuestion();
 
 
-document.getElementById("question").innerHTML=
-currentQuestion.text;
+if(!q){
 
+showResult(remaining[0]);
+return;
+
+}
+
+
+currentQuestion=q;
+
+asked.push(q.text);
+
+
+document.getElementById("question").innerHTML=q.text;
 
 document.getElementById("remaining").innerHTML=
-"נשארו אפשרויות: "+remaining.length+" יסודות";
+"נשארו "+remaining.length+" אפשרויות";
 
 }
 
 
 
-// תשובת תלמיד
+// תשובת כן/לא
 
-function answer(value){
+function answer(answer){
 
 
-remaining = remaining.filter(e=>
+remaining=remaining.filter(e=>
 
-currentQuestion.check(e)===value
+currentQuestion.symbols.includes(e.symbol)===answer
 
 );
 
 
-if(remaining.length===0){
-
-alert("כנראה הייתה תשובה לא נכונה. מתחילים מחדש.");
-
-resetGame();
-
-return;
-
-}
-
-
-askQuestion();
-
+showQuestion();
 
 }
 
 
 
-// הצגת תוצאה
+// הצגת כרטיס היסוד הסופי
 
-function showResult(e){
+function showResult(element){
 
 
 document.getElementById("game").classList.remove("active");
@@ -1261,7 +1300,7 @@ document.getElementById("result").classList.add("active");
 
 document.getElementById("found").innerHTML=
 `
-${e.name} (${e.symbol})
+${element.name} (${element.symbol})
 `;
 
 
@@ -1269,12 +1308,18 @@ document.getElementById("foundInfo").innerHTML=
 
 `
 
-<p>${e.summary}</p>
+<p><b>מספר אטומי:</b> ${element.number}</p>
 
-<h3>תכונות נוספות:</h3>
+<p>${element.summary}</p>
+
+<h3>מידע נוסף:</h3>
 
 <p>
-${e.extra.join("<br>")}
+${element.extra.join("<br>")}
+</p>
+
+<p style="margin-top:20px;font-weight:bold;">
+עריכה: מילכה ברקו גרש
 </p>
 
 `;
@@ -1296,8 +1341,80 @@ document.getElementById("start").classList.add("active");
 }
 
 
+// הצגת רשימת היסודות
 
-// הפעלה ראשונית
+function createElementList(){
+
+let box=document.getElementById("elementsList");
+
+if(!box) return;
+
+box.innerHTML="";
+
+
+elements.forEach(e=>{
+
+let item=document.createElement("div");
+
+item.className="element";
+
+item.innerHTML=
+
+`
+<strong>${e.symbol}</strong><br>
+${e.name}
+`;
+
+box.appendChild(item);
+
+});
+
+}
+
+
+// פתיחת כרטיסי מידע
+
+function showInfo(){
+
+let cards=document.getElementById("cards");
+
+cards.innerHTML="";
+
+
+elements.forEach(e=>{
+
+cards.innerHTML +=
+
+`
+<div class="card">
+
+<h2>${e.name} (${e.symbol})</h2>
+
+<p>${e.summary}</p>
+
+<p>
+${e.extra.join("<br>")}
+</p>
+
+</div>
+`;
+
+});
+
+
+document.getElementById("modal").style.display="flex";
+
+}
+
+
+function closeInfo(){
+
+document.getElementById("modal").style.display="none";
+
+}
+
+
+// אתחול
 
 createElementList();
 
