@@ -6,136 +6,130 @@
     <title>חידון היסודות הכימיים</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --background: #f8f9fa;
+            --primary-color: #2c3e50;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --bg-color: #f4f6f9;
             --card-bg: #ffffff;
-            --text: #333333;
+            --text-color: #333333;
         }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background);
-            color: var(--text);
+            background-color: var(--bg-color);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        .container {
+        .quiz-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             width: 100%;
-            max-width: 800px;
-            background: var(--card-bg);
+            max-width: 650px;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
 
-        h1 {
-            color: var(--primary);
-            margin-bottom: 10px;
+        .quiz-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin: 0;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 15px;
+        .progress-indicator {
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: bold;
         }
 
-        .progress-fill {
-            height: 100%;
-            background-color: var(--secondary);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .quiz-box {
-            margin-bottom: 20px;
-        }
-
-        .question-text {
-            font-size: 1.3rem;
+        .question-box {
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--primary);
-            line-height: 1.4;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: var(--primary-color);
         }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .option-btn {
-            background-color: #f1f2f6;
-            border: 2px solid #dcdde1;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            background-color: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 1.05rem;
+            text-align: right;
             cursor: pointer;
             transition: all 0.2s ease;
-            text-align: center;
-            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-color);
         }
 
         .option-btn:hover:not(:disabled) {
-            background-color: #dfe4ea;
-            border-color: var(--secondary);
+            background-color: #edf2f7;
+            border-color: var(--accent-color);
         }
 
         .option-btn.correct {
-            background-color: #2ed573 !important;
+            background-color: var(--success-color) !important;
             color: white;
-            border-color: #26af5f !important;
+            border-color: #27ae60 !important;
         }
 
-        .option-btn.wrong {
-            background-color: var(--accent) !important;
+        .option-btn.incorrect {
+            background-color: var(--error-color) !important;
             color: white;
             border-color: #c0392b !important;
         }
 
-        .info-card {
-            background-color: #f1f8ff;
-            border-right: 5px solid var(--secondary);
+        .feedback-box {
+            background-color: #ebf5fb;
+            border-right: 4px solid var(--accent-color);
             padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.4;
             display: none;
         }
 
+        .action-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+
         .next-btn {
-            background-color: var(--secondary);
+            background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            display: none;
+            border-radius: 6px;
+            padding: 12px 25px;
+            font-size: 1.05rem;
             font-weight: bold;
+            cursor: pointer;
             transition: background-color 0.2s;
+            display: none;
         }
 
         .next-btn:hover {
@@ -144,35 +138,42 @@
 
         .score-screen {
             text-align: center;
+            padding: 20px 0;
             display: none;
         }
 
         .score-screen h2 {
-            font-size: 2rem;
-            color: var(--primary);
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .score-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
         }
 
         .restart-btn {
-            background-color: var(--primary);
+            background-color: var(--primary-color);
             color: white;
             border: none;
+            border-radius: 6px;
             padding: 12px 30px;
             font-size: 1.1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
             font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
 
         .restart-btn:hover {
             background-color: #1a252f;
         }
 
-        footer {
-            margin-top: 40px;
+        .quiz-credits {
+            margin-top: 35px;
             text-align: center;
-            font-size: 0.9rem;
-            color: #7f8c8d;
+            font-size: 0.85rem;
+            color: #95a5a6;
             border-top: 1px solid #eaeaea;
             padding-top: 15px;
         }
@@ -180,295 +181,304 @@
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>חידון היסודות הכימיים</h1>
-        <p>בדקו את הידע שלכם על יסודות הטבע, תכונותיהם ושימושיהם!</p>
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-    </header>
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h1 class="quiz-title">חידון היסודות הכימיים</h1>
+        <div class="progress-indicator" id="progressIndicator">שאלה 1 מתוך 35</div>
+    </div>
 
-    <main>
-        <div id="quizContainer" class="quiz-box">
-            <div id="questionText" class="question-text">טוען שאלה...</div>
-            <div id="optionsGrid" class="options-grid"></div>
-            <div id="infoCard" class="info-card"></div>
-            <button id="nextBtn" class="next-btn" onclick="nextQuestion()">לשאלה הבאה</button>
+    <div id="quizMainContent">
+        <div class="question-box" id="questionBox">טוען שאלה...</div>
+        
+        <div class="options-list" id="optionsList">
+            <!-- אפשרויות יטענו לכאן -->
         </div>
 
-        <div id="scoreScreen" class="score-screen">
-            <h2>החידון הסתיים!</h2>
-            <p id="finalScoreText" style="font-size: 1.3rem; margin: 20px 0;"></p>
-            <button class="restart-btn" onclick="restartQuiz()">התחל מחדש</button>
-        </div>
-    </main>
+        <div class="feedback-box" id="feedbackBox"></div>
 
-    <footer>
+        <div class="action-footer">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">לשאלה הבאה</button>
+        </div>
+    </div>
+
+    <div class="score-screen" id="scoreScreen">
+        <h2>החידון הסתיים!</h2>
+        <p id="scoreText"></p>
+        <button class="restart-btn" onclick="restartQuiz()">התחל מחדש</button>
+    </div>
+
+    <div class="quiz-credits">
         עריכה: מילכה ברקו גרש | בית הספר המשותף חוף הכרמל
-    </footer>
+    </div>
 </div>
 
 <script>
-    const questions = [
+    const quizData = [
         {
             question: "האם זהו גז קל מהאוויר, משמש למילוי בלונים פורחים?",
-            answer: "הליום (He)",
+            options: ["הליום (He)", "ניאון (Ne)", "ארגון (Ar)", "חמצן (O)"],
+            correct: 0,
             info: "הליום הוא גז אציל קל מאוד ובלתי דליק, ולכן משמש בבטחה למילוי בלונים פורחים וספינות אוויר."
         },
         {
             question: "האם היסוד הוא גז אציל שמייצר הבזקי אור צבעוניים כאשר מעבירים דרכו זרם חשמלי בשלטי תאורה?",
-            answer: "ניאון (Ne)",
+            options: ["הליום (He)", "ניאון (Ne)", "ארגון (Ar)", "כלור (Cl)"],
+            correct: 1,
             info: "ניאון זורח באור אדום-כתמתם אופייני כאשר מעבירים דרכו זרם חשמלי תחת מתח גבוה בשלטי פרסום ותאורה."
         },
         {
             question: "האם זוהי מתכת קלה המשמשת בעיקר בסוללות נטענות?",
-            answer: "ליתיום (Li)",
+            options: ["נתרן (Na)", "מגנזיום (Mg)", "ליתיום (Li)", "אלומיניום (Al)"],
+            correct: 2,
             info: "ליתיום היא המתכת הקלה ביותר בטבע, והיא מרכיב חיוני ומרכזי בסוללות נטענות למכשירים ניידים ורכבים חשמליים."
         },
         {
             question: "האם היסוד הוא מתכת חזקה אך קלה שמתאפיינת בשקיפות מסוימת לקרני רנטגן?",
-            answer: "בריליום (Be)",
-            info: "בריליום משמש לייצור חלונות עבור מכשירי רנטגן הודות ליכולתו להעביר קרני רנטגן מבלי להיבלע על יתן."
+            options: ["טיטניום (Ti)", "בריליום (Be)", "מגנזיום (Mg)", "אלומיניום (Al)"],
+            correct: 1,
+            info: "בריליום משמש לייצור חלונות עבור מכשירי רנטגן הודות ליכולתו להעביר קרני רנטגן מבלי להיבלע על ידו."
         },
         {
             question: "האם היסוד מעורב בייצור חומרי זכוכית עמידים במיוחד בפני חום?",
-            answer: "בור (B)",
+            options: ["צורן (Si)", "בור (B)", "פחמן (C)", "גופרית (S)"],
+            correct: 1,
             info: "תרכובות בור משמשות לייצור זכוכית מסוג פיירקס, העמידה בפני זעזועים תרמיים ושינויי טמפרטורה קיצוניים."
         },
         {
             question: "האם היסוד מהווה אבן בניין מרכזית בכל היצורים החיים ומופיע בטבע גם כיהלום, גרפיט ופחם?",
-            answer: "פחמן (C)",
+            options: ["צורן (Si)", "חנקן (N)", "פחמן (C)", "זרחן (P)"],
+            correct: 2,
             info: "פחמן הוא בסיס הכימיה האורגנית ומופיע בטבע בצורות שונות לגמרי (אלוטרופים) כמו יהלום קשה וגרפיט רך."
         },
         {
             question: "האם היסוד הוא גז שמהווה את החלק הארי (הרוב המוחלט) מנפח האוויר באטמוספרה?",
-            answer: "חנקן (N)",
+            options: ["חמצן (O)", "חנקן (N)", "ארגון (Ar)", "הליום (He)"],
+            correct: 1,
             info: "חנקן מהווה כ-78% מנפח האוויר באטמוספרה של כדור הארץ והוא חיוני לבניית חלבונים וחומצות גרעין."
         },
         {
             question: "האם היסוד הוא גז חיוני ביותר הדרוש לנשימה של רוב היצורים החיים ומאפשר תהליכי בעירה?",
-            answer: "חמצן (O)",
+            options: ["חנקן (N)", "חמצן (O)", "כלור (Cl)", "פלואור (F)"],
+            correct: 1,
             info: "חמצן חיוני לתהליך הנשימה התאית ברוב היצורים החיים ומשמש כמחזר מרכזי בתהליכי בעירה."
         },
         {
             question: "האם היסוד הוא גז פעיל מאוד מבחינה כימית שמשולב בדרך כלל במוצרים לשמירה על השיניים?",
-            answer: "פלואור (F)",
+            options: ["כלור (Cl)", "ברום (Br)", "פלואור (F)", "יוד (I)"],
+            correct: 2,
             info: "תרכובות פלואור (פלואוריד) מוספות למי השתייה ולמשחות שיניים כדי לחזק את אמייל השן ולמנוע עששת."
         },
         {
             question: "האם זוהי מתכת רכה המשמשת כמרכיב במולקולת מלח בישול ומגיבה בעוצמה רבה ופיצוצית במגע ישיר עם מים?",
-            answer: "נתרן (Na)",
+            options: ["אשלגן (K)", "נתרן (Na)", "סידן (Ca)", "ליתיום (Li)"],
+            correct: 1,
             info: "נתרן הוא מתכת אלקלית פעילה ביותר המתרכבת עם כלור ליצירת מלח בישול (NaCl), אך במצבה הטהור מגיבה באלימות עם מים."
         },
         {
             question: "האם היסוד הוא מתכת קלה שמתאפיינת בבעירה באור לבן וחזק במיוחד?",
-            answer: "מגנזיום (Mg)",
+            options: ["אלומיניום (Al)", "מגנזיום (Mg)", "נתרן (Na)", "סידן (Ca)"],
+            correct: 1,
             info: "מגנזיום בוער באור לבן ומסנוור, ולכן שימש בעבר בנורות הבזק (פלאש) לצילום וכיום בזיקוקים די-טכניים."
         },
         {
             question: "האם זוהי מתכת קלה שממנה נוהגים לייצר פחיות שתייה ונייר עטיפה מטאלי שימושי?",
-            answer: "אלומיניום (Al)",
+            options: ["מגנזיום (Mg)", "אלומיניום (Al)", "טיטניום (Ti)", "אבץ (Zn)"],
+            correct: 1,
             info: "אלומיניום היא מתכת קלה, עמידה בפני קורוזיה וניתנת למחזור אינסופי, ולכן נפוצה בפחיות ובנייר כסף."
         },
         {
             question: "האם היסוד משמש כחומר גלם מוליך-למחצה הבסיסי ביותר לבניית שבבי מחשב?",
-            answer: "צורן (Si)",
+            options: ["גרפיט (C)", "צורן (Si)", "בור (B)", "זרחן (P)"],
+            correct: 1,
             info: "צורן (סיליקון) הוא מוליך-למחצה מרכזי בתעשיית האלקטרוניקה ובסיס לייצור מעבדים ושבבים למחשבים."
         },
         {
             question: "האם זהו יסוד החיוני לבניית עצמות ורקמות חיים (כמו DNA ואנרגיה), ומשמש גם לייצור דשנים וגפרורים?",
-            answer: "זרחן (P)",
+            options: ["גופרית (S)", "זרחן (P)", "חנקן (N)", "פחמן (C)"],
+            correct: 1,
             info: "זרחן חיוני למבנה ה-DNA, לממברנות התאים ולמעגל האנרגיה בגוף (ATP), ומשמש גם בחקלאות ובתעשיית הגפרורים."
         },
         {
             question: "האם היסוד הוא מוצק אל-מתכתי בעל גוון צהוב בולט שקשור לתהליכי טבע ודשנים?",
-            answer: "גופרית (S)",
-            info: "גופרית היא מוצק צהוב המופיע בסביבת הרי פ געש ומשמש לייצור חומצה גופרתית, דשנים ותרופות."
+            options: ["זרחן (P)", "גופרית (S)", "יוד (I)", "צורן (Si)"],
+            correct: 1,
+            info: "גופרית היא מוצק צהוב המופיע בסביבת הרי געש ומשמש לייצור חומצה גופרתית, דשנים ותרופות."
         },
         {
             question: "האם היסוד הוא גז בעל צבע ירקרק המשמש באופן נפוץ לחיטוי מים בבריכות?",
-            answer: "כלור (Cl)",
+            options: ["פלואור (F)", "כלור (Cl)", "ברום (Br)", "חמצן (O)"],
+            correct: 1,
             info: "כלור הוא גז רעיל וירוק-צהבהב המשמש לחיטוי מי שתייה ומי בריכות שחייה הודות לתכונותיו המחטאות."
         },
         {
             question: "האם זהו גז אציל ויציב מאוד הנמצא באטמוספרה אך כמעט ואינו יוצר תרכובות כימיות?",
-            answer: "ארגון (Ar)",
+            options: ["הליום (He)", "ניאון (Ne)", "ארגון (Ar)", "קריפטון (Kr)"],
+            correct: 2,
             info: "ארגון הוא גז אציל אינרטי לחלוטין המהווה כמעט אחוז שלם מהאוויר ומשמש למילוי נורות ליבון ולרתכות."
         },
         {
             question: "האם זוהי מתכת רכה ופעילה מאוד, מצויה בשפע בבננות, וחיונית לתפקוד השרירים והעצבים?",
-            answer: "אשלגן (K)",
+            options: ["נתרן (Na)", "אשלגן (K)", "סידן (Ca)", "מגנזיום (Mg)"],
+            correct: 1,
             info: "אשלגן הוא מינרל חיוני לתפקוד תקין של מערכת העצבים והשרירים ונמצא במזונות רבים כמו בננות."
         },
         {
             question: "האם היסוד הוא מתכת חשובה שמככבת בבניית רקמות קשות כמו עצמות ושיניים?",
-            answer: "סידן (Ca)",
+            options: ["מגנזיום (Mg)", "סידן (Ca)", "אשלגן (K)", "ברזל (Fe)"],
+            correct: 1,
             info: "סידן הוא אבן בניין חיונית למבנה העצמות והשיניים בגוף האדם, ומשמש גם בתהליכי העברת אותות עצביים."
         },
         {
             question: "האם היסוד הוא מתכת קלה וחזקה שעמידה לחלוטין בפני חלודה ומשמשת בשתלים רפואיים?",
-            answer: "טיטניום (Ti)",
-            info: "טיטניום משаלב חוזק גבוה עם משקל נמוך ועמידות מוחלטת בפני קורוזיה בגוף האדם, ולכן מעולה לשתלים רפואיים."
+            options: ["אלומיניום (Al)", "טיטניום (Ti)", "כרום (Cr)", "ניקל (Ni)"],
+            correct: 1,
+            info: "טיטניום משלב חוזק גבוה עם משקל נמוך ועמידות מוחלטת בפני קורוזיה בגוף האדם, ולכן מעולה לשתלים רפואיים."
         },
         {
             question: "האם היסוד היא מתכת מבריקה ששומרת על פלדה מפני הופעת חלודה (בפלדת אל-חלד)?",
-            answer: "כרום (Cr)",
+            options: ["ניקל (Ni)", "כרום (Cr)", "מנגן (Mn)", "אבץ (Zn)"],
+            correct: 1,
             info: "כרום יוצר שכבת תחמוצת שקופה המגינה על פלדת אל-חלד (אינוקס) מפני חלודה ומעניקה לו ברק."
         },
         {
             question: "האם היסוד הוא מתכת שמוסיפים כדי להקשיח ולחזק סגסוגות פלדה שונות?",
-            answer: "מנגן (Mn)",
+            options: ["כרום (Cr)", "מנגן (Mn)", "ברזל (Fe)", "נחושת (Cu)"],
+            correct: 1,
             info: "מנגן משמש כתוסף חיוני בייצור סגסוגות פלדה כדי לשפר את הקשיחות, החוזק והעמידות שלהן בפני שחיקה."
         },
         {
             question: "האם זוהי מתכת חזקה ונפוצה, נמשכת היטב למגנט, וחיונית להובלת חמצן בגוף באמצעות מערכת הדם?",
-            answer: "ברזל (Fe)",
+            options: ["קובלט (Co)", "ניקל (Ni)", "ברזל (Fe)", "נחושת (Cu)"],
+            correct: 2,
             info: "ברזל הוא מרכזי במולקולת ההמוגלובין בתאי הדם האדומים, האחראית על הובלת חמצן לכל תאי הגוף."
         },
         {
             question: "האם זוהי מתכת הנמשכת למגנט, ומשתתפת בייצור סוללות מתקדמות ופיגמנטים לצבעים כחולים (כמו בקרמיקה ובזכוכית)?",
-            answer: "קובלט (Co)",
+            options: ["ניקל (Ni)", "קובלט (Co)", "ברזל (Fe)", "מנגן (Mn)"],
+            correct: 1,
             info: "קובלט הוא חומר פרומגנטי המשמש בסוללות נטענות מתקדמות וכן כיסוד יוצר פיגמנט כחול עמוק לקרמיקה ולזכוכית."
         },
         {
             question: "האם היסוד הוא מתכת חסינה לקורוזיה שנמשכת למגנט ומשמשת להטבעת מטבעות?",
-            answer: "ניקל (Ni)",
+            options: ["קובלט (Co)", "ניקל (Ni)", "אבץ (Zn)", "כרום (Cr)"],
+            correct: 1,
             info: "ניקל היא מתכת עמידה מאוד בפני קורוזיה, נמשכת למגנט, ונמצאת בשימוש נרחב במטבעות ובסגסוגות."
         },
         {
             question: "האם היסוד הוא מתכת בעלת גוון כתמתם-אדמדם שמשמשת בהצטיינות להולכת חשמל?",
-            answer: "נחושת (Cu)",
+            options: ["זהב (Au)", "כסף (Ag)", "נחושת (Cu)", "אבץ (Zn)"],
+            correct: 2,
             info: "נחושת ידועה במוליכות החשמלית והתרמית הגבוהה שלה ולכן משמשת רבות בחוטי חשמל ובכבלים."
         },
         {
             question: "האם היסוד הוא מתכת שמשמשת בתהליכי ציפוי מגן כדי למנוע מברזל להחליד?",
-            answer: "אבץ (Zn)",
+            options: ["נחושת (Cu)", "אבץ (Zn)", "כרום (Cr)", "ניקל (Ni)"],
+            correct: 1,
             info: "אבץ משמש בתהליך המכונה 'גלוונוניזציה' לציפוי ברזל ופלדה כדי להגן עליהם מפני חלודה וקורוזיה."
         },
         {
             question: "האם זהו חומר הלוגני פעיל מאוד במצב צבירה נוזלי בצבע אדום-חום המשמש בתעשייה (למשל כמעכב בעירה)?",
-            answer: "ברום (Br)",
+            options: ["כלור (Cl)", "ברום (Br)", "יוד (I)", "כספית (Hg)"],
+            correct: 1,
             info: "ברום הוא אחד משני היסודות היחידים הנוזליים בטמפרטורת החדר, בעל צבע אדום-חום, פעיל מאוד ומשמש בין היתר כמעכב בעירה."
         },
         {
             question: "האם היסוד הוא מתכת יקרה שמציגה את מוליכות החשמל הגבוהה ביותר בטבע?",
-            answer: "כסף (Ag)",
+            options: ["זהב (Au)", "פלטינה (Pt)", "כסף (Ag)", "נחושת (Cu)"],
+            correct: 2,
             info: "כסף מחזיק במוליכות החשמלית והתרמית הגבוהה ביותר מבין כל היסודות בטבע, ומשמש ברכיבים אלקטרוניים רגישים."
         },
         {
             question: "האם היסוד הוא מוצק כהה שעובר ישירות למצב גזי (באמצעות חימום או בתנאים מסוימים) בצבע סגול ומשמש לחיטוי?",
-            answer: "יוד (I)",
+            options: ["ברום (Br)", "יוד (I)", "גופרית (S)", "זרחן (P)"],
+            correct: 1,
             info: "יוד עובר תהליך המראה (סובלימציה) ישירות ממוצק לגז סגול, ומשמש בין היתר לחיטוי פצעים ובתהליכים ביולוגיים."
         },
         {
             question: "האם היסוד הוא מתכת עמידה מאוד שמתאפיינת בנקודת ההתכה הגבוהה ביותר מכולן?",
-            answer: "טונגסטן (W)",
+            options: ["טיטניום (Ti)", "טונגסטן (W)", "פלטינה (Pt)", "זהב (Au)"],
+            correct: 1,
             info: "לטיטניום וטונגסטן יש נקודות התכה גבוהות, אך טונגסטן מחזיק בנקודת ההתכה הגבוהה ביותר מכל המתכות (מעל 3400 מעלות צלזיוס)."
         },
         {
             question: "האם היסוד הוא מתכת יקרה ואצילה המשמשת כזרז כימי מרכזי וכן בשתלים רפואיים וקוצבי לב?",
-            answer: "פלטינה (Pt)",
+            options: ["זהב (Au)", "פלטינה (Pt)", "כסף (Ag)", "כספית (Hg)"],
+            correct: 1,
             info: "פלטינה היא מתכת אצילה ועמידה ביותר שאינה מתחמצנת, ולכן משמשת בממירים קטליטיים, תכשיטים ושתלים רפואיים."
         },
         {
             question: "האם היסוד הוא מתכת יקרה בעלת צבע צהוב מרהיב שאינה מתחמצנת או מאבדת ברק?",
-            answer: "זהב (Au)",
+            options: ["כסף (Ag)", "פלטינה (Pt)", "זהב (Au)", "נחושת (Cu)"],
+            correct: 2,
             info: "זהב הוא מתכת אצילה שאינה מגיבה עם חמצן או חומצות רובם, ולכן שומרת על הברק והצבע המרהיב שלה לאורך אלפי שנים."
         },
         {
             question: "האם היסוד הוא המתכת היחידה המוכרת לנו שנמצאת במצב נוזלי בתנאי החדר?",
-            answer: "כספית (Hg)",
+            options: ["ברום (Br)", "כספית (Hg)", "גاليوم (Ga)", "עופרת (Pb)"],
+            correct: 1,
             info: "כספית היא מתכת כבדה המופיעה במצב צבירה נוזלי בטמפרטורת החדר, ושומשה בעבר במדחומים."
         },
         {
             question: "האם היסוד הוא מתכת כבדה וצפופה במיוחד שמשמשת בין השאר לסיכוך נגד קרינה?",
-            answer: "עופרת (Pb)",
+            options: ["ברזל (Fe)", "כספית (Hg)", "עופרת (Pb)", "ניקל (Ni)"],
+            correct: 2,
             info: "עופרת היא מתכת כבדה וצפופה מאוד שבשל צפיפותה הגבוהה מהווה חומר הגנה מעולה מפני קרינה מייננת."
         }
     ];
 
     let currentQuestionIndex = 0;
     let score = 0;
-    let answerLocked = false;
-    let shuffledQuestions = [];
-
-    // ערבוב שאלות בכניסה למשחק כדי שהחוויה תהיה דינמית
-    function initGame() {
-        shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
-        currentQuestionIndex = 0;
-        score = 0;
-        document.getElementById('scoreScreen').style.display = 'none';
-        document.getElementById('quizContainer').style.display = 'block';
-        loadQuestion();
-    }
+    let answered = false;
 
     function loadQuestion() {
-        answerLocked = false;
-        const qData = shuffledQuestions[currentQuestionIndex];
+        answered = false;
+        const currentQ = quizData[currentQuestionIndex];
         
-        // עדכון פס התקדמות
-        const progress = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
-        document.getElementById('progressFill').style.width = `${progress}%`;
-
-        document.getElementById('questionText').innerText = qData.question;
-        document.getElementById('infoCard').style.display = 'none';
-        document.getElementById('nextBtn').style.display = 'none';
-
-        // יצירת אפשרויות (התשובה הנכונה + 3 מסיחים אקראיים מתוך שאר היסודות)
-        const optionsGrid = document.getElementById('optionsGrid');
-        optionsGrid.innerHTML = '';
-
-        let possibleOptions = [qData.answer];
-        while (possibleOptions.length < 4) {
-            const randomQ = questions[Math.floor(Math.random() * questions.length)];
-            if (!possibleOptions.includes(randomQ.answer)) {
-                possibleOptions.push(randomQ.answer);
-            }
-        }
+        document.getElementById('progressIndicator').innerText = `שאלה ${currentQuestionIndex + 1} מתוך ${quizData.length}`;
+        document.getElementById('questionBox').innerText = currentQ.question;
         
-        // ערבוב מיקום האפשרויות
-        possibleOptions.sort(() => Math.random() - 0.5);
-
-        possibleOptions.forEach(option => {
+        const optionsList = document.getElementById('optionsList');
+        optionsList.innerHTML = '';
+        
+        currentQ.options.forEach((option, index) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.innerText = option;
-            btn.onclick = () => selectAnswer(btn, option, qData.answer, qData.info);
-            optionsGrid.appendChild(btn);
+            btn.onclick = () => selectOption(index, btn);
+            optionsList.appendChild(btn);
         });
+
+        document.getElementById('feedbackBox').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'none';
     }
 
-    function selectAnswer(selectedBtn, chosenAnswer, correctAnswer, infoText) {
-        if (answerLocked) return;
-        answerLocked = true;
+    function selectOption(selectedIndex, btnElement) {
+        if (answered) return;
+        answered = true;
 
-        const buttons = document.querySelectorAll('.option-btn');
-        buttons.forEach(btn => {
-            btn.disabled = true;
-            if (btn.innerText === correctAnswer) {
-                btn.classList.add('correct');
-            }
-        });
+        const currentQ = quizData[currentQuestionIndex];
+        const optionButtons = document.querySelectorAll('.option-btn');
 
-        if (chosenAnswer === correctAnswer) {
+        if (selectedIndex === currentQ.correct) {
+            btnElement.classList.add('correct');
             score++;
         } else {
-            selectedBtn.classList.add('wrong');
+            btnElement.classList.add('incorrect');
+            optionButtons[currentQ.correct].classList.add('correct');
         }
 
-        // הצגת כרטיס מידע מעשיר
-        const infoCard = document.getElementById('infoCard');
-        infoCard.innerHTML = `<strong>העשרה:</strong> ${infoText}`;
-        infoCard.style.display = 'block';
+        optionButtons.forEach(btn => btn.disabled = true);
 
-        // הצגת כפתור מעבר לשאלה הבאה
-        document.getElementById('nextBtn').style.display = 'inline-block';
+        const feedbackBox = document.getElementById('feedbackBox');
+        feedbackBox.innerHTML = `<strong>העשרה:</strong> ${currentQ.info}`;
+        feedbackBox.style.display = 'block';
+
+        document.getElementById('nextBtn').style.display = 'block';
     }
 
     function nextQuestion() {
         currentQuestionIndex++;
-        if (currentQuestionIndex < shuffledQuestions.length) {
+        if (currentQuestionIndex < quizData.length) {
             loadQuestion();
         } else {
             showScore();
@@ -476,21 +486,22 @@
     }
 
     function showScore() {
-        document.getElementById('quizContainer').style.display = 'none';
+        document.getElementById('quizMainContent').style.display = 'none';
         const scoreScreen = document.getElementById('scoreScreen');
         scoreScreen.style.display = 'block';
         
-        document.getElementById('progressFill').style.width = '100%';
-        document.getElementById('finalScoreText').innerText = 
-            `ענית נכון על ${score} מתוך ${shuffledQuestions.length} שאלות!`;
+        document.getElementById('scoreText').innerText = `ענית נכון על ${score} מתוך ${quizData.length} שאלות.`;
     }
 
     function restartQuiz() {
-        initGame();
+        currentQuestionIndex = 0;
+        score = 0;
+        document.getElementById('scoreScreen').style.display = 'none';
+        document.getElementById('quizMainContent').style.display = 'block';
+        loadQuestion();
     }
 
-    // הפעלת המשחק בטעינה הראשונה
-    window.onload = initGame;
+    window.onload = loadQuestion;
 </script>
 
 </body>
