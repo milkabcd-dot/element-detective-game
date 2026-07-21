@@ -3,734 +3,471 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>היסוד הסודי - משחק כימיה</title>
+
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: 'Segoe UI', 'Arial Hebrew', Arial, sans-serif;
-    background: linear-gradient(135deg, #4b1fa8 0%, #7b2ff7 40%, #17a2b8 100%);
-    min-height: 100vh;
-    color: #222;
-    direction: rtl;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#dff6ff,#f7e8ff);
+    min-height:100vh;
+    margin:0;
+    padding:20px;
+    text-align:center;
+}
 
-  .container {
-    width: 100%;
-    max-width: 900px;
-    background: rgba(255,255,255,0.95);
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-    padding: 30px;
-    position: relative;
-    overflow: hidden;
-  }
+.container {
+    background:white;
+    max-width:850px;
+    margin:auto;
+    padding:30px;
+    border-radius:25px;
+    box-shadow:0 10px 30px #aaa;
+}
 
-  h1 {
-    text-align: center;
-    font-size: 2.4em;
-    background: linear-gradient(90deg, #7b2ff7, #17a2b8, #f39c12);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 6px;
-  }
+h1 {
+    color:#5429a8;
+    font-size:36px;
+}
 
-  .subtitle {
-    text-align: center;
-    color: #555;
-    font-size: 1.1em;
-    margin-bottom: 20px;
-  }
+.subtitle {
+    font-size:20px;
+    color:#555;
+}
 
-  .screen { display: none; animation: fadeIn 0.5s ease; }
-  .screen.active { display: block; }
+.elements {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+    gap:10px;
+    margin:25px;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+.element {
+    background:#eef4ff;
+    border:2px solid #777;
+    border-radius:15px;
+    padding:12px;
+    font-weight:bold;
+}
 
-  .big-btn {
-    display: block;
-    margin: 20px auto 0;
-    padding: 16px 40px;
-    font-size: 1.3em;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(90deg, #7b2ff7, #17a2b8);
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(123,47,247,0.4);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .big-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 26px rgba(123,47,247,0.5); }
-  .big-btn:active { transform: translateY(0) scale(0.98); }
+.symbol {
+    font-size:25px;
+    color:#5429a8;
+}
 
-  .elements-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 10px;
-    margin: 20px 0;
-  }
+button {
+    font-size:20px;
+    padding:12px 35px;
+    border-radius:30px;
+    border:none;
+    cursor:pointer;
+    margin:10px;
+}
 
-  .element-chip {
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 14px;
-    padding: 10px 6px;
-    text-align: center;
-    transition: all 0.5s ease;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  }
-  .element-chip .sym {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
-  }
-  .element-chip .nm {
-    font-size: 0.8em;
-    color: #444;
-    margin-top: 2px;
-  }
-  .element-chip .num {
-    font-size: 0.7em;
-    color: #999;
-  }
+.start {
+    background:#5429a8;
+    color:white;
+}
 
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    font-size: 0.8em;
-    color: #555;
-    margin-bottom: 14px;
-    flex-wrap: wrap;
-  }
-  .legend span { display: flex; align-items: center; gap: 5px; }
-  .dot { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+.yes {
+    background:#27ae60;
+    color:white;
+}
 
-  .element-chip.eliminated {
-    opacity: 0.15;
-    transform: scale(0.75) rotate(8deg);
-    filter: grayscale(100%);
-    pointer-events: none;
-  }
+.no {
+    background:#e74c3c;
+    color:white;
+}
 
-  .progress-box {
-    text-align: center;
-    margin: 15px 0;
-  }
-  .progress-count {
-    font-size: 2em;
-    font-weight: bold;
-    color: #7b2ff7;
-  }
-  .progress-bar-bg {
-    background: #eee;
-    border-radius: 20px;
-    height: 14px;
-    overflow: hidden;
-    margin-top: 8px;
-  }
-  .progress-bar-fill {
-    background: linear-gradient(90deg, #17a2b8, #7b2ff7);
-    height: 100%;
-    transition: width 0.6s ease;
-  }
+.question {
+    background:#f5f5ff;
+    border-radius:20px;
+    padding:30px;
+    margin:25px;
+    font-size:28px;
+    min-height:80px;
+}
 
-  .question-box {
-    background: linear-gradient(135deg, #f7f3ff, #eefbfd);
-    border-radius: 20px;
-    padding: 30px 20px;
-    text-align: center;
-    margin: 20px 0;
-    border: 2px dashed #b892f5;
-  }
-  .question-text {
-    font-size: 1.6em;
-    font-weight: bold;
-    color: #333;
-    min-height: 1.4em;
-  }
+.hidden {
+    display:none;
+}
 
-  .answer-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-  }
-  .ans-btn {
-    font-size: 1.4em;
-    font-weight: bold;
-    padding: 18px 50px;
-    border-radius: 60px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    transition: transform 0.15s ease;
-  }
-  .ans-btn:hover { transform: scale(1.06); }
-  .ans-btn:active { transform: scale(0.95); }
-  .yes-btn { background: linear-gradient(90deg, #27ae60, #2ecc71); }
-  .no-btn { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+.result {
+    background:#fff8dd;
+    border:3px solid #f0b400;
+    padding:30px;
+    border-radius:20px;
+    font-size:25px;
+}
 
-  .result-card {
-    text-align: center;
-    padding: 30px;
-    background: linear-gradient(135deg, #fff8ec, #eefbfd);
-    border-radius: 20px;
-    border: 3px solid #f39c12;
-    animation: popIn 0.6s ease;
-  }
-  @keyframes popIn {
-    0% { transform: scale(0.5); opacity: 0; }
-    70% { transform: scale(1.08); opacity: 1; }
-    100% { transform: scale(1); }
-  }
-  .result-title {
-    font-size: 1.8em;
-    color: #7b2ff7;
-    margin-bottom: 10px;
-  }
-  .result-name {
-    font-size: 2.6em;
-    font-weight: bold;
-    color: #f39c12;
-    margin: 10px 0;
-  }
-  .result-details {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin: 20px 0;
-  }
-  .detail-pill {
-    background: white;
-    border-radius: 14px;
-    padding: 12px 18px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    min-width: 130px;
-  }
-  .detail-pill .label { font-size: 0.8em; color: #888; }
-  .detail-pill .value { font-size: 1.2em; font-weight: bold; color: #333; }
+.info {
+    font-size:18px;
+    color:#555;
+}
 
-  .use-box {
-    background: white;
-    border-radius: 14px;
-    padding: 16px;
-    margin-top: 10px;
-    font-size: 1.1em;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-
-  footer {
-    text-align: center;
-    color: rgba(255,255,255,0.75);
-    font-size: 0.75em;
-    margin-top: 18px;
-  }
-
-  .legend {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 0.85em;
-    color: #666;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
-  .legend span { display: flex; align-items: center; gap: 6px; }
-  .dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
-
-  @media (max-width: 500px) {
-    h1 { font-size: 1.8em; }
-    .ans-btn { padding: 14px 30px; font-size: 1.1em; }
-    .question-text { font-size: 1.3em; }
-  }
-
-  .ref-btn {
-    display: block;
-    margin: 14px auto;
-    padding: 10px 22px;
-    font-size: 1em;
-    font-weight: bold;
-    border: 2px solid #7b2ff7;
-    border-radius: 40px;
-    background: white;
-    color: #7b2ff7;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .ref-btn:hover { background: #7b2ff7; color: white; }
-
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.active { display: flex; }
-  .modal-content {
-    background: white;
-    border-radius: 18px;
-    max-width: 950px;
-    width: 100%;
-    max-height: 85vh;
-    overflow-y: auto;
-    padding: 20px;
-    position: relative;
-  }
-  .modal-close {
-    position: sticky;
-    top: 0;
-    float: left;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    font-size: 1.1em;
-    cursor: pointer;
-    z-index: 2;
-  }
-  .modal-title {
-    text-align: center;
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #7b2ff7;
-    margin-bottom: 10px;
-  }
-  .ref-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.82em;
-  }
-  .ref-table th, .ref-table td {
-    padding: 8px 6px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-  }
-  .ref-table th {
-    position: sticky;
-    top: 0;
-    background: #f3f0ff;
-    color: #4b1fa8;
-  }
-  .ref-table tr:nth-child(even) { background: #fafafa; }
-  .ref-table td.el-name { font-weight: bold; text-align: right; }
-  .yn-yes { color: #27ae60; font-weight: bold; }
-  .yn-no { color: #ccc; }
 </style>
+
 </head>
+
+
 <body>
 
 <div class="container">
-  <h1>🔬 היסוד הסודי 🔬</h1>
-  <p class="subtitle">בחרו יסוד בלב, והמחשב ינסה לגלות אותו!</p>
 
-  <!-- מסך פתיחה -->
-  <div id="screen-intro" class="screen active">
-    <p style="text-align:center; font-size:1.1em; color:#444; margin-bottom:10px;">
-      הביטו ברשימת 36 היסודות, <strong>בחרו יסוד אחד בלב</strong> - ואל תגלו למחשב מהו!<br>
-      המחשב ישאל שאלות של כן/לא, ובסופן ינסה לנחש מה בחרתם.
-    </p>
-    <div id="intro-legend" class="legend"></div>
-    <p style="text-align:center; font-size:0.95em; color:#666; margin-bottom:6px;">
-      💡 טיפ: אתם לא חייבים לזכור הכל בעל-פה - אפשר להציץ בטבלת העזר גם באמצע המשחק!
-    </p>
-    <button class="ref-btn" onclick="openReferenceTable()">📋 טבלת עזר מלאה - כל הפרטים על היסודות</button>
-    <div id="intro-grid" class="elements-grid"></div>
-    <button class="big-btn" onclick="startGame()">🚀 התחילו לשחק!</button>
-  </div>
+<h1>🔬 היסוד הסודי 🔬</h1>
 
-  <!-- מסך משחק -->
-  <div id="screen-game" class="screen">
-    <div class="progress-box">
-      <div class="progress-count"><span id="remaining-count">36</span> יסודות נשארו מתוך 36</div>
-      <div class="progress-bar-bg"><div id="progress-fill" class="progress-bar-fill" style="width:100%"></div></div>
-    </div>
+<p class="subtitle">
+בחרו יסוד אחד מהרשימה וזכרו אותו.<br>
+המשחק ישאל שאלות וינסה לגלות איזה יסוד בחרתם.
+</p>
 
-    <button class="ref-btn" onclick="openReferenceTable()">📋 טבלת עזר - בדקו את פרטי היסוד שלכם</button>
 
-    <div class="question-box">
-      <div class="question-text" id="question-text">טוען שאלה...</div>
-      <div class="answer-buttons">
-        <button class="ans-btn yes-btn" onclick="answerQuestion(true)">✅ כן</button>
-        <button class="ans-btn no-btn" onclick="answerQuestion(false)">❌ לא</button>
-      </div>
-    </div>
+<div id="intro">
 
-    <div id="game-legend" class="legend"></div>
-    <div id="game-grid" class="elements-grid"></div>
-  </div>
+<div id="elements" class="elements"></div>
 
-  <!-- מסך תוצאה -->
-  <div id="screen-result" class="screen">
-    <div class="result-card">
-      <div class="result-title">🎉 מצאתי! 🎉</div>
-      <div>בחרת ב־</div>
-      <div class="result-name" id="result-name"></div>
-      <div class="result-details">
-        <div class="detail-pill"><div class="label">סימול כימי</div><div class="value" id="result-symbol"></div></div>
-        <div class="detail-pill"><div class="label">מספר אטומי</div><div class="value" id="result-number"></div></div>
-        <div class="detail-pill"><div class="label">קבוצה כימית</div><div class="value" id="result-family"></div></div>
-        <div class="detail-pill"><div class="label">צבע אופייני</div><div class="value" id="result-color"></div></div>
-      </div>
-      <div class="use-box">💡 <strong>שימוש מעניין:</strong> <span id="result-use"></span></div>
-      <button class="big-btn" onclick="resetGame()">🔄 משחק חדש</button>
-    </div>
-  </div>
+<button class="start" onclick="startGame()">
+התחילו לשחק 🚀
+</button>
 
-  <footer>עריכה: מילכה ברקו גרש</footer>
 </div>
 
-<!-- מודל טבלת עזר -->
-<div id="ref-modal" class="modal-overlay" onclick="if(event.target===this) closeReferenceTable()">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeReferenceTable()">✕</button>
-    <div class="modal-title">📋 טבלת פרטי היסודות</div>
-    <p style="text-align:center; color:#777; font-size:0.85em; margin-bottom:10px;">
-      מצאו את היסוד שבחרתם בלב, ובדקו לפיו את התשובות לשאלות
-    </p>
-    <div style="overflow-x:auto;">
-      <table class="ref-table" id="ref-table"></table>
-    </div>
-  </div>
+
+
+<div id="game" class="hidden">
+
+<div class="question" id="question">
+השאלה תופיע כאן
 </div>
+
+<button class="yes" onclick="answer(true)">
+כן ✔
+</button>
+
+<button class="no" onclick="answer(false)">
+לא ✖
+</button>
+
+
+<p class="info">
+מספר יסודות שנשארו:
+<span id="count"></span>
+</p>
+
+</div>
+
+
+
+<div id="result" class="hidden result">
+
+<h2>🎉 מצאתי!</h2>
+
+<p>
+היסוד שבחרתם הוא:
+</p>
+
+<h1 id="resultName"></h1>
+
+<p id="resultInfo"></p>
+
+<button class="start" onclick="location.reload()">
+משחק חדש
+</button>
+
+</div>
+
+
+</div>
+
 
 <script>
-// ===================== מאגר היסודות =====================
-// הגדרת קבוצות/סדרות כימיות בטבלה המחזורית - שם תצוגה + צבע לזיהוי חזותי
-// שימו לב: "משפחה" מציינת קבוצה בטבלה המחזורית בעלת תכונות דומות (כמו הלוגנים או גזים אצילים),
-// ואילו "סדרה" (כמו מתכות המעבר) היא טווח רחב יותר של יסודות שאינו נחשב משפחה אחת קלאסית.
-const FAMILIES = {
-  alkali:     { name: "משפחת המתכות האלקליות (כמו נתרן ואשלגן)",             color: "#f39c12" },
-  alkaline:   { name: "משפחת המתכות האלקליות עפרוריות (כמו סידן ומגנזיום)",  color: "#d35400" },
-  transition: { name: "סדרת מתכות המעבר (כמו ברזל ונחושת)",                  color: "#2980b9" },
-  other:      { name: "קבוצת המתכות האחרות (כמו אלומיניום ועופרת)",         color: "#16a085" },
-  metalloid:  { name: "קבוצת המטלואידים (כמו בור וצורן)",                    color: "#8e44ad" },
-  nonmetal:   { name: "קבוצת האל-מתכות (כמו פחמן וחמצן)",                    color: "#27ae60" },
-  halogen:    { name: "משפחת ההלוגנים (כמו כלור ויוד)",                      color: "#c0392b" },
-  noble:      { name: "משפחת הגזים האצילים (כמו הליום וניאון)",              color: "#c2185b" }
-};
+const elements = [
 
-// קטגוריות שימוש עיקריות - תווית קצרה לתצוגה
-const USES = {
-  body: "גוף האדם ותזונה",
-  electronics: "אלקטרוניקה וטכנולוגיה",
-  jewelry: "תכשיטים ויוקרה",
-  construction: "בנייה ותעשייה",
-  household: "בית ומוצרי יומיום",
-  medical: "רפואה וחיטוי",
-  farming: "חקלאות ודשנים",
-  energy: "אנרגיה ותחבורה"
-};
+{
+name:"חמצן",
+symbol:"O",
+info:"מרכיב חיוני באוויר ובתהליך הנשימה",
+facts:["נשימה","אוויר"]
+},
 
-// ===================== בנק שאלות קונקרטיות =====================
-// כל שאלה מוגדרת מראש עם רשימת יסודות מפורשת וברורה - אין הסקה אוטומטית מתכונה מופשטת,
-// כדי שתלמיד לא יצטרך "לנחש" איך המשחק מסווג את היסוד שבחר.
-const CONCRETE_QUESTIONS = [
-  { key:"air",        text:"האם היסוד הוא אחד משלושת הגזים העיקריים באוויר שאנחנו נושמים (חנקן, חמצן או ארגון)?", symbols:["N","O","Ar"] },
-  { key:"breathe",     text:"האם היסוד הוא הגז שהגוף שלנו צריך כדי לנשום ולחיות?", symbols:["O"] },
-  { key:"balloons",    text:"האם היסוד משמש למילוי בלוני גז מרחפים (כמו בלוני יום הולדת)?", symbols:["He"] },
-  { key:"neon",        text:"האם היסוד משמש בשלטי ניאון זוהרים?", symbols:["Ne"] },
-  { key:"bulbs",       text:"האם היסוד משמש למילוי נורות חשמל רגילות ולריתוך מתכות?", symbols:["Ar"] },
-  { key:"jewelry",     text:"האם היסוד משמש לייצור תכשיטים יקרים כמו טבעות ושרשראות?", symbols:["Au","Ag","Pt"] },
-  { key:"battery",     text:"האם היסוד משמש בייצור סוללות נטענות (כמו בטלפון או ברכב חשמלי)?", symbols:["Li","Co","Ni"] },
-  { key:"salt",        text:"האם היסוד הוא מרכיב עיקרי במלח הבישול?", symbols:["Na","Cl"] },
-  { key:"teeth",       text:"האם היסוד חשוב לבניית עצמות ושיניים חזקות?", symbols:["Ca","F","P"] },
-  { key:"disinfect",   text:"האם היסוד משמש לחיטוי (כמו חיטוי פצעים או מי שתייה בבריכה)?", symbols:["Cl","I","Br"] },
-  { key:"glass",       text:"האם היסוד משמש בייצור זכוכית?", symbols:["Si","B"] },
-  { key:"wires",       text:"האם היסוד הוא חומר הגלם העיקרי לחוטי חשמל?", symbols:["Cu"] },
-  { key:"galvanize",   text:"האם היסוד משמש לציפוי מתכות כדי למנוע מהן להחליד?", symbols:["Zn"] },
-  { key:"stainless",   text:"האם היסוד משמש בייצור פלדת אל-חלד (סטיינלס)?", symbols:["Cr","Ni"] },
-  { key:"fuel",        text:"האם היסוד משמש כדלק (לרקטות, למכוניות או כפחם)?", symbols:["H","C"] },
-  { key:"coins",       text:"האם היסוד משמש בייצור מטבעות?", symbols:["Cu","Ni","Ag"] },
-  { key:"fireworks",   text:"האם היסוד משמש בייצור זיקוקים ותאורה בהירה במיוחד?", symbols:["Mg"] },
-  { key:"cans",        text:"האם היסוד משמש בייצור קופסאות שימורים ונייר כסף למטבח?", symbols:["Al"] },
-  { key:"fertilizer",  text:"האם היסוד הוא מרכיב עיקרי בדשנים לחקלאות?", symbols:["N","P","K"] },
-  { key:"matches",     text:"האם היסוד משמש בייצור ראשי גפרורים?", symbols:["P","S"] },
-  { key:"chips",       text:"האם היסוד משמש בייצור שבבים אלקטרוניים ופאנלים סולריים?", symbols:["Si"] },
-  { key:"blood",       text:"האם היסוד הוא חלק ממולקולה שנושאת חמצן בדם שלנו?", symbols:["Fe"] },
-  { key:"aviation",    text:"האם היסוד משמש בתעשיית התעופה ובתותבות רפואיות?", symbols:["Ti"] },
-  { key:"liquidmetal", text:"האם היסוד הוא מתכת שנוזלית בטמפרטורת החדר (כמו בכספית של מדי חום ישנים)?", symbols:["Hg"] },
-  { key:"drill",       text:"האם היסוד משמש בייצור מקדחים וכלי חיתוך קשים במיוחד?", symbols:["W"] },
-  { key:"carbattery",  text:"האם היסוד משמש במצברי רכב?", symbols:["Pb"] },
-  { key:"catalytic",   text:"האם היסוד משמש כזרז (קטליזטור) במפלט של מכוניות?", symbols:["Pt"] },
-  { key:"organic",     text:"האם היסוד הוא הבסיס לכל החומרים האורגניים (כמו ביהלום או בעיפרון)?", symbols:["C"] },
-  { key:"xray",        text:"האם היסוד משמש בחלונות למכשירי רנטגן ובסגסוגות קלות במיוחד?", symbols:["Be"] },
-  { key:"steel",       text:"האם היסוד משמש בייצור פלדה חזקה?", symbols:["Fe","Mn"] },
-  { key:"magnet",      text:"האם היסוד נמשך למגנט?", symbols:["Fe","Co","Ni"] }
+{
+name:"חנקן",
+symbol:"N",
+info:"הגז הנפוץ ביותר באוויר ומשמש גם לייצור דשנים",
+facts:["אוויר","דשנים"]
+},
+
+{
+name:"הליום",
+symbol:"He",
+info:"גז קל המשמש למילוי בלונים",
+facts:["בלונים"]
+},
+
+{
+name:"ליתיום",
+symbol:"Li",
+info:"משמש בסוללות נטענות של טלפונים ורכבים חשמליים",
+facts:["סוללות"]
+},
+
+{
+name:"פחמן",
+symbol:"C",
+info:"מרכיב בסיסי ביצורים חיים. מופיע גם ביהלום ובעיפרון",
+facts:["יהלום","חיים"]
+},
+
+{
+name:"נתרן",
+symbol:"Na",
+info:"מרכיב חשוב במלח הבישול",
+facts:["מלח","גוף"]
+},
+
+{
+name:"כלור",
+symbol:"Cl",
+info:"משמש לחיטוי מים ומרכיב במלח הבישול",
+facts:["חיטוי","מלח"]
+},
+
+{
+name:"סידן",
+symbol:"Ca",
+info:"מרכיב חשוב בעצמות ובשיניים",
+facts:["עצמות","שיניים","גוף"]
+},
+
+{
+name:"ברזל",
+symbol:"Fe",
+info:"מרכיב חשוב בדם וגם מתכת הנמשכת למגנט",
+facts:["דם","מגנט"]
+},
+
+{
+name:"נחושת",
+symbol:"Cu",
+info:"משמשת לייצור חוטי חשמל",
+facts:["חשמל"]
+},
+
+{
+name:"צורן",
+symbol:"Si",
+info:"משמש לייצור שבבים אלקטרוניים וזכוכית",
+facts:["שבבים","זכוכית"]
+},
+
+{
+name:"זהב",
+symbol:"Au",
+info:"מתכת יקרה המשמשת בתכשיטים",
+facts:["תכשיטים"]
+},
+
+{
+name:"כסף",
+symbol:"Ag",
+info:"מתכת המשמשת בתכשיטים וברכיבים חשמליים",
+facts:["תכשיטים"]
+},
+
+{
+name:"מגנזיום",
+symbol:"Mg",
+info:"משמש בזיקוקים ובסגסוגות קלות",
+facts:["זיקוקים"]
+},
+
+{
+name:"אלומיניום",
+symbol:"Al",
+info:"משמש לייצור פחיות ונייר כסף",
+facts:["פחיות"]
+}
+
 ];
 
-const ELEMENTS = [
-  {name:"מימן", symbol:"H", number:1, family:"nonmetal", metal:false, state:"gas", magnetic:false, inBody:true, conducts:false, colorful:false, useCat:"energy", use:"דלק לרקטות ומרכיב עיקרי במים", color:"חסר צבע"},
-  {name:"הליום", symbol:"He", number:2, family:"noble", metal:false, state:"gas", magnetic:false, inBody:false, conducts:false, colorful:false, useCat:"household", use:"מילוי בלוני גז וספינות אוויר", color:"חסר צבע"},
-  {name:"ליתיום", symbol:"Li", number:3, family:"alkali", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"electronics", use:"סוללות נטענות בטלפונים וברכבים חשמליים", color:"כסוף"},
-  {name:"בריליום", symbol:"Be", number:4, family:"alkaline", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"חלונות למכשירי רנטגן וסגסוגות קלות", color:"אפור בהיר"},
-  {name:"בור", symbol:"B", number:5, family:"metalloid", metal:false, state:"solid", magnetic:false, inBody:false, conducts:false, colorful:true, useCat:"household", use:"ייצור זכוכית עמידה בחום (פיירקס)", color:"שחור-חום"},
-  {name:"פחמן", symbol:"C", number:6, family:"nonmetal", metal:false, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:true, useCat:"energy", use:"בסיס לכל החומרים האורגניים ולדלקים", color:"שחור (כפחם) או שקוף (כיהלום)"},
-  {name:"חנקן", symbol:"N", number:7, family:"nonmetal", metal:false, state:"gas", magnetic:false, inBody:true, conducts:false, colorful:false, useCat:"farming", use:"מרכיב עיקרי באוויר וחומר גלם לדשנים", color:"חסר צבע"},
-  {name:"חמצן", symbol:"O", number:8, family:"nonmetal", metal:false, state:"gas", magnetic:false, inBody:true, conducts:false, colorful:false, useCat:"body", use:"נשימה של בני אדם ובעלי חיים", color:"חסר צבע"},
-  {name:"פלואור", symbol:"F", number:9, family:"halogen", metal:false, state:"gas", magnetic:false, inBody:false, conducts:false, colorful:true, useCat:"medical", use:"תוסף במשחות שיניים למניעת עששת", color:"צהבהב-ירקרק"},
-  {name:"ניאון", symbol:"Ne", number:10, family:"noble", metal:false, state:"gas", magnetic:false, inBody:false, conducts:false, colorful:false, useCat:"household", use:"שלטי ניאון זוהרים", color:"חסר צבע"},
-  {name:"נתרן", symbol:"Na", number:11, family:"alkali", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"body", use:"מרכיב עיקרי במלח הבישול", color:"כסוף"},
-  {name:"מגנזיום", symbol:"Mg", number:12, family:"alkaline", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"construction", use:"סגסוגות קלות למטוסים וזיקוקים", color:"כסוף-לבן"},
-  {name:"אלומיניום", symbol:"Al", number:13, family:"other", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"household", use:"קופסאות שימורים ונייר כסף", color:"כסוף"},
-  {name:"צורן", symbol:"Si", number:14, family:"metalloid", metal:false, state:"solid", magnetic:false, inBody:false, conducts:false, colorful:false, useCat:"electronics", use:"שבבים אלקטרוניים ופאנלים סולריים", color:"אפור כהה"},
-  {name:"זרחן", symbol:"P", number:15, family:"nonmetal", metal:false, state:"solid", magnetic:false, inBody:true, conducts:false, colorful:true, useCat:"farming", use:"ראשי גפרורים ודשנים", color:"לבן או אדום"},
-  {name:"גופרית", symbol:"S", number:16, family:"nonmetal", metal:false, state:"solid", magnetic:false, inBody:true, conducts:false, colorful:true, useCat:"medical", use:"ייצור חומצה גופריתית ותרופות", color:"צהוב"},
-  {name:"כלור", symbol:"Cl", number:17, family:"halogen", metal:false, state:"gas", magnetic:false, inBody:true, conducts:false, colorful:true, useCat:"medical", use:"חיטוי מי שתייה ובריכות שחייה", color:"ירקרק-צהוב"},
-  {name:"ארגון", symbol:"Ar", number:18, family:"noble", metal:false, state:"gas", magnetic:false, inBody:false, conducts:false, colorful:false, useCat:"household", use:"מילוי נורות חשמל", color:"חסר צבע"},
-  {name:"אשלגן", symbol:"K", number:19, family:"alkali", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"body", use:"דשנים ותפקוד תאי העצב והשריר", color:"כסוף"},
-  {name:"סידן", symbol:"Ca", number:20, family:"alkaline", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"body", use:"בניית עצמות ושיניים", color:"לבן-כסוף"},
-  {name:"טיטניום", symbol:"Ti", number:22, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"תעשיית התעופה ותותבות רפואיות", color:"כסוף כהה"},
-  {name:"כרום", symbol:"Cr", number:24, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"ציפוי מבריק לחלקי רכב וברזים", color:"כסוף מבריק"},
-  {name:"מנגן", symbol:"Mn", number:25, family:"transition", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"construction", use:"ייצור פלדה חזקה", color:"אפור-ורדרד"},
-  {name:"ברזל", symbol:"Fe", number:26, family:"transition", metal:true, state:"solid", magnetic:true, inBody:true, conducts:true, colorful:false, useCat:"construction", use:"בניית מבנים וייצור פלדה", color:"אפור-כסוף"},
-  {name:"קובלט", symbol:"Co", number:27, family:"transition", metal:true, state:"solid", magnetic:true, inBody:false, conducts:true, colorful:true, useCat:"electronics", use:"סוללות נטענות וצבעים כחולים", color:"כחול-אפור"},
-  {name:"ניקל", symbol:"Ni", number:28, family:"transition", metal:true, state:"solid", magnetic:true, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"מטבעות ופלדת אל-חלד", color:"לבן-כסוף"},
-  {name:"נחושת", symbol:"Cu", number:29, family:"transition", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:true, useCat:"electronics", use:"חוטי חשמל וצנרת", color:"אדמדם"},
-  {name:"אבץ", symbol:"Zn", number:30, family:"transition", metal:true, state:"solid", magnetic:false, inBody:true, conducts:true, colorful:false, useCat:"construction", use:"ציפוי גלוון למניעת חלודה", color:"כסוף-אפור"},
-  {name:"ברום", symbol:"Br", number:35, family:"halogen", metal:false, state:"liquid", magnetic:false, inBody:false, conducts:false, colorful:true, useCat:"medical", use:"ייצור חומרי חיטוי וכיבוי אש", color:"אדום-חום"},
-  {name:"כסף", symbol:"Ag", number:47, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"jewelry", use:"תכשיטים וכלי אוכל יוקרתיים", color:"כסוף בוהק"},
-  {name:"יוד", symbol:"I", number:53, family:"halogen", metal:false, state:"solid", magnetic:false, inBody:true, conducts:false, colorful:true, useCat:"medical", use:"חיטוי פצעים ותפקוד בלוטת התריס", color:"סגול-שחור"},
-  {name:"טונגסטן", symbol:"W", number:74, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"construction", use:"ייצור מקדחים וכלי חיתוך תעשייתיים קשים במיוחד", color:"אפור כהה"},
-  {name:"פלטינה", symbol:"Pt", number:78, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"jewelry", use:"תכשיטים יקרים וזרזים במפלטי רכב", color:"לבן-כסוף"},
-  {name:"זהב", symbol:"Au", number:79, family:"transition", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:true, useCat:"jewelry", use:"תכשיטים ורכיבים אלקטרוניים", color:"צהוב"},
-  {name:"כספית", symbol:"Hg", number:80, family:"transition", metal:true, state:"liquid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"household", use:"מדי חום ישנים ומתגי חשמל", color:"כסוף נוזלי"},
-  {name:"עופרת", symbol:"Pb", number:82, family:"other", metal:true, state:"solid", magnetic:false, inBody:false, conducts:true, colorful:false, useCat:"energy", use:"מצברים לרכבים", color:"אפור כהה"}
+
+// שאלות ברורות לתלמידים
+const questions = [
+
+{
+text:"האם היסוד הוא מרכיב חשוב בעצמות ובשיניים?",
+fact:"עצמות"
+},
+
+{
+text:"האם היסוד קשור לדם שלנו?",
+fact:"דם"
+},
+
+{
+text:"האם משתמשים ביסוד לייצור חוטי חשמל?",
+fact:"חשמל"
+},
+
+{
+text:"האם משתמשים ביסוד בסוללות נטענות?",
+fact:"סוללות"
+},
+
+{
+text:"האם היסוד נמצא באוויר שאנו נושמים?",
+fact:"אוויר"
+},
+
+{
+text:"האם היסוד משמש למילוי בלונים?",
+fact:"בלונים"
+},
+
+{
+text:"האם משתמשים ביסוד לייצור תכשיטים?",
+fact:"תכשיטים"
+},
+
+{
+text:"האם היסוד קשור למלח הבישול?",
+fact:"מלח"
+},
+
+{
+text:"האם משתמשים בו לחיטוי מים?",
+fact:"חיטוי"
+},
+
+{
+text:"האם משתמשים בו בייצור שבבים אלקטרוניים?",
+fact:"שבבים"
+}
+
 ];
 
-// ===================== מנוע המשחק =====================
-let remaining = [];
-let askedKeys = new Set();
-let currentQuestion = null;
 
-function buildGrid(containerId, list, eliminatedSet) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-  list.forEach(el => {
-    const fam = FAMILIES[el.family];
-    const chip = document.createElement("div");
-    chip.className = "element-chip" + (eliminatedSet && eliminatedSet.has(el.symbol) ? " eliminated" : "");
-    chip.style.borderColor = fam.color;
-    chip.style.background = fam.color + "18"; // גוון עדין ברקע
-    chip.id = containerId + "-" + el.symbol;
-    chip.innerHTML = `<div class="sym" style="color:${fam.color}">${el.symbol}</div><div class="nm">${el.name}</div><div class="num">מס' ${el.number}</div>`;
-    container.appendChild(chip);
-  });
+let remaining=[];
+let currentQuestion=0;
+
+
+
+function showElements(){
+
+let box=document.getElementById("elements");
+
+elements.forEach(e=>{
+
+box.innerHTML +=
+
+`
+<div class="element">
+
+<div class="symbol">
+${e.symbol}
+</div>
+
+${e.name}
+
+</div>
+`;
+
+});
+
 }
 
-function buildLegend(containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = Object.values(FAMILIES).map(f =>
-    `<span><i class="dot" style="background:${f.color}"></i>${f.name}</span>`
-  ).join("");
+
+
+function startGame(){
+
+remaining=[...elements];
+
+document.getElementById("intro").classList.add("hidden");
+
+document.getElementById("game").classList.remove("hidden");
+
+currentQuestion=0;
+
+askQuestion();
+
 }
 
-function yn(bool) {
-  return bool ? '<span class="yn-yes">✔ כן</span>' : '<span class="yn-no">✘ לא</span>';
+
+
+function askQuestion(){
+
+document.getElementById("count").innerHTML=
+remaining.length;
+
+
+if(remaining.length==1){
+
+showResult(remaining[0]);
+return;
+
 }
 
-const STATE_HE = { gas: "גז", liquid: "נוזל", solid: "מוצק" };
 
-function buildReferenceTable() {
-  const table = document.getElementById("ref-table");
-  const sorted = [...ELEMENTS].sort((a, b) => a.number - b.number);
-  let html = `<thead><tr>
-    <th>יסוד</th><th>סימול</th><th>מס' אטומי</th><th>קבוצה/סדרה</th><th>סוג</th>
-    <th>מצב צבירה</th><th>מגנטי</th><th>בגוף האדם</th><th>מוליך חשמל</th>
-    <th>צבע</th><th>שימוש עיקרי</th>
-  </tr></thead><tbody>`;
-  sorted.forEach(e => {
-    html += `<tr>
-      <td class="el-name">${e.name}</td>
-      <td>${e.symbol}</td>
-      <td>${e.number}</td>
-      <td style="color:${FAMILIES[e.family].color}; font-weight:bold;">${FAMILIES[e.family].name}</td>
-      <td>${e.metal ? "מתכת" : "אל-מתכת"}</td>
-      <td>${STATE_HE[e.state]}</td>
-      <td>${yn(e.magnetic)}</td>
-      <td>${yn(e.inBody)}</td>
-      <td>${yn(e.conducts)}</td>
-      <td>${e.color}</td>
-      <td style="text-align:right;">${e.use}</td>
-    </tr>`;
-  });
-  html += "</tbody>";
-  table.innerHTML = html;
+if(currentQuestion>=questions.length){
+
+showResult(remaining[0]);
+return;
+
 }
 
-function openReferenceTable() {
-  document.getElementById("ref-modal").classList.add("active");
+
+document.getElementById("question").innerHTML=
+questions[currentQuestion].text;
+
 }
 
-function closeReferenceTable() {
-  document.getElementById("ref-modal").classList.remove("active");
+
+
+function answer(isYes){
+
+let fact=questions[currentQuestion].fact;
+
+
+remaining =
+remaining.filter(e=>{
+
+let has=e.facts.includes(fact);
+
+return isYes ? has : !has;
+
+});
+
+
+currentQuestion++;
+
+askQuestion();
+
 }
 
-function showScreen(id) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+
+
+function showResult(element){
+
+document.getElementById("game").classList.add("hidden");
+
+document.getElementById("result").classList.remove("hidden");
+
+
+document.getElementById("resultName").innerHTML =
+element.name+" ("+element.symbol+")";
+
+
+document.getElementById("resultInfo").innerHTML =
+element.info;
+
 }
 
-function startGame() {
-  remaining = [...ELEMENTS];
-  askedKeys = new Set();
-  buildGrid("game-grid", ELEMENTS, new Set());
-  buildLegend("game-legend");
-  updateProgress();
-  showScreen("screen-game");
-  askNextQuestion();
-}
 
-function resetGame() {
-  startGame();
-}
 
-function updateProgress() {
-  document.getElementById("remaining-count").textContent = remaining.length;
-  const pct = Math.round((remaining.length / ELEMENTS.length) * 100);
-  document.getElementById("progress-fill").style.width = pct + "%";
-}
+showElements();
 
-// בוחר את השאלה הכי "מפרידה" מתוך רשימת שאלות מועמדות, לפי היסודות שנשארו
-function getBestQuestion(list) {
-  const candidates = [];
-
-  function tryQuestion(key, text, pred) {
-    if (askedKeys.has(key)) return;
-    const yesCount = list.filter(pred).length;
-    const noCount = list.length - yesCount;
-    if (yesCount === 0 || noCount === 0) return; // לא מפרידה בין היסודות שנשארו
-    const score = -Math.abs(yesCount - noCount); // ככל שקרוב יותר לחצי-חצי, כך טוב יותר
-    candidates.push({ key, text, pred, score });
-  }
-
-  // תכונות פיזיקליות בסיסיות - אובייקטיביות וקלות לבדיקה (אין צורך לזכור בעל-פה)
-  tryQuestion("metal", "האם היסוד הוא מתכת מבריקה וקשיחה?", e => e.metal);
-  tryQuestion("gas", "האם היסוד הוא גז בטמפרטורת החדר?", e => e.state === "gas");
-  tryQuestion("liquid", "האם היסוד הוא נוזל בטמפרטורת החדר?", e => e.state === "liquid");
-  tryQuestion("solid", "האם היסוד הוא מוצק בטמפרטורת החדר?", e => e.state === "solid");
-
-  // בנק שאלות קונקרטיות - לכל שאלה רשימת יסודות מפורשת וברורה מראש (ללא הסקה אוטומטית מקטגוריה מעורפלת)
-  CONCRETE_QUESTIONS.forEach(q => {
-    tryQuestion(q.key, q.text, e => q.symbols.includes(e.symbol));
-  });
-
-  // שאלות על קבוצה/סדרה כימית - כל קטגוריה שקיימת עדיין בין הנשארים
-  const familiesPresent = new Set(list.map(e => e.family));
-  familiesPresent.forEach(famKey => {
-    const famName = FAMILIES[famKey].name; // השם כבר כולל את המילה "משפחת"/"סדרת" בהתאם, וגם דוגמה מוכרת
-    tryQuestion("family:" + famKey, `האם היסוד שייך ל${famName}?`, e => e.family === famKey);
-  });
-
-  if (candidates.length === 0) return null;
-
-  candidates.sort((a, b) => b.score - a.score);
-  const bestScore = candidates[0].score;
-  const best = candidates.filter(c => c.score === bestScore);
-  return best[Math.floor(Math.random() * best.length)];
-}
-
-function askNextQuestion() {
-  if (remaining.length === 1) {
-    showResult(remaining[0]);
-    return;
-  }
-  if (remaining.length === 0) {
-    // מצב חריג - לא אמור לקרות, נאתחל את המשחק
-    remaining = [...ELEMENTS];
-    askedKeys = new Set();
-    buildGrid("game-grid", ELEMENTS, new Set());
-    updateProgress();
-  }
-
-  let q = getBestQuestion(remaining);
-
-  if (!q) {
-    // אין שאלה שמפרידה - ננחש ישירות את היסוד הראשון שנשאר
-    const target = remaining[0];
-    q = {
-      key: "guess:" + target.symbol,
-      text: `האם היסוד שבחרת הוא ${target.name} (${target.symbol})?`,
-      pred: e => e.symbol === target.symbol,
-      isGuess: true
-    };
-  }
-
-  currentQuestion = q;
-  askedKeys.add(q.key);
-  document.getElementById("question-text").textContent = q.text;
-}
-
-function answerQuestion(isYes) {
-  if (!currentQuestion) return;
-
-  if (currentQuestion.isGuess && isYes) {
-    const found = remaining.find(currentQuestion.pred);
-    showResult(found);
-    return;
-  }
-
-  const before = remaining.map(e => e.symbol);
-  const filtered = remaining.filter(e => currentQuestion.pred(e) === isYes);
-
-  if (filtered.length === 0) {
-    // התשובה סותרת תשובה קודמת - לא מבצעים סינון (כדי לא לאבד את היסוד שנבחר),
-    // ומציגים הודעה ידידותית לפני מעבר לשאלה אחרת
-    document.getElementById("question-text").textContent =
-      "🤔 התשובה הזו נראית לא תואמת לתשובה קודמת... בואו ננסה שאלה אחרת!";
-    setTimeout(() => { askNextQuestion(); }, 1400);
-    return;
-  }
-
-  remaining = filtered;
-  const after = new Set(remaining.map(e => e.symbol));
-  const eliminatedNow = before.filter(sym => !after.has(sym));
-
-  // אנימציית פסילה
-  eliminatedNow.forEach(sym => {
-    const chip = document.getElementById("game-grid-" + sym);
-    if (chip) chip.classList.add("eliminated");
-  });
-
-  updateProgress();
-
-  setTimeout(() => {
-    askNextQuestion();
-  }, 550);
-}
-
-function showResult(element) {
-  document.getElementById("result-name").textContent = element.name;
-  document.getElementById("result-symbol").textContent = element.symbol;
-  document.getElementById("result-number").textContent = element.number;
-  document.getElementById("result-family").textContent = FAMILIES[element.family].name;
-  document.getElementById("result-color").textContent = element.color;
-  document.getElementById("result-use").textContent = element.use + " (" + USES[element.useCat] + ")";
-  showScreen("screen-result");
-}
-
-// ===================== אתחול =====================
-buildGrid("intro-grid", ELEMENTS, new Set());
-buildLegend("intro-legend");
-buildReferenceTable();
 </script>
+
 </body>
 </html>
