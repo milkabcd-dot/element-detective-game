@@ -418,14 +418,14 @@
 // שימו לב: "משפחה" מציינת קבוצה בטבלה המחזורית בעלת תכונות דומות (כמו הלוגנים או גזים אצילים),
 // ואילו "סדרה" (כמו מתכות המעבר) היא טווח רחב יותר של יסודות שאינו נחשב משפחה אחת קלאסית.
 const FAMILIES = {
-  alkali:     { name: "משפחת המתכות האלקליות",             color: "#f39c12" },
-  alkaline:   { name: "משפחת המתכות האלקליות עפרוריות",    color: "#d35400" },
-  transition: { name: "סדרת מתכות המעבר",                   color: "#2980b9" },
-  other:      { name: "מתכות אחרות",                        color: "#16a085" },
-  metalloid:  { name: "קבוצת המטלואידים",                   color: "#8e44ad" },
-  nonmetal:   { name: "קבוצת האל-מתכות",                    color: "#27ae60" },
-  halogen:    { name: "משפחת ההלוגנים",                     color: "#c0392b" },
-  noble:      { name: "משפחת הגזים האצילים",                color: "#c2185b" }
+  alkali:     { name: "משפחת המתכות האלקליות (כמו נתרן ואשלגן)",             color: "#f39c12" },
+  alkaline:   { name: "משפחת המתכות האלקליות עפרוריות (כמו סידן ומגנזיום)",  color: "#d35400" },
+  transition: { name: "סדרת מתכות המעבר (כמו ברזל ונחושת)",                  color: "#2980b9" },
+  other:      { name: "קבוצת המתכות האחרות (כמו אלומיניום ועופרת)",         color: "#16a085" },
+  metalloid:  { name: "קבוצת המטלואידים (כמו בור וצורן)",                    color: "#8e44ad" },
+  nonmetal:   { name: "קבוצת האל-מתכות (כמו פחמן וחמצן)",                    color: "#27ae60" },
+  halogen:    { name: "משפחת ההלוגנים (כמו כלור ויוד)",                      color: "#c0392b" },
+  noble:      { name: "משפחת הגזים האצילים (כמו הליום וניאון)",              color: "#c2185b" }
 };
 
 // קטגוריות שימוש עיקריות - תווית קצרה לתצוגה
@@ -440,17 +440,42 @@ const USES = {
   energy: "אנרגיה ותחבורה"
 };
 
-// אותן קטגוריות עם דוגמה קונקרטית - משמש לניסוח השאלות כדי להפחית עמימות
-const USES_WITH_EXAMPLES = {
-  body: "גוף האדם ותזונה (למשל נשימה, עצמות או מלח בישול)",
-  electronics: "אלקטרוניקה וטכנולוגיה (למשל סוללות, שבבים או חוטי חשמל)",
-  jewelry: "תכשיטים ויוקרה (למשל טבעות, שרשראות או שעונים יקרים)",
-  construction: "בנייה ותעשייה (למשל פלדה, כלי עבודה או מקדחים)",
-  household: "בית ומוצרי יומיום (למשל קופסאות שימורים, נורות או בלונים)",
-  medical: "רפואה וחיטוי (למשל חיטוי פצעים או משחת שיניים)",
-  farming: "חקלאות ודשנים",
-  energy: "אנרגיה ותחבורה (למשל דלק או מצברים לרכבים)"
-};
+// ===================== בנק שאלות קונקרטיות =====================
+// כל שאלה מוגדרת מראש עם רשימת יסודות מפורשת וברורה - אין הסקה אוטומטית מתכונה מופשטת,
+// כדי שתלמיד לא יצטרך "לנחש" איך המשחק מסווג את היסוד שבחר.
+const CONCRETE_QUESTIONS = [
+  { key:"air",        text:"האם היסוד הוא אחד משלושת הגזים העיקריים באוויר שאנחנו נושמים (חנקן, חמצן או ארגון)?", symbols:["N","O","Ar"] },
+  { key:"breathe",     text:"האם היסוד הוא הגז שהגוף שלנו צריך כדי לנשום ולחיות?", symbols:["O"] },
+  { key:"balloons",    text:"האם היסוד משמש למילוי בלוני גז מרחפים (כמו בלוני יום הולדת)?", symbols:["He"] },
+  { key:"neon",        text:"האם היסוד משמש בשלטי ניאון זוהרים?", symbols:["Ne"] },
+  { key:"bulbs",       text:"האם היסוד משמש למילוי נורות חשמל רגילות ולריתוך מתכות?", symbols:["Ar"] },
+  { key:"jewelry",     text:"האם היסוד משמש לייצור תכשיטים יקרים כמו טבעות ושרשראות?", symbols:["Au","Ag","Pt"] },
+  { key:"battery",     text:"האם היסוד משמש בייצור סוללות נטענות (כמו בטלפון או ברכב חשמלי)?", symbols:["Li","Co","Ni"] },
+  { key:"salt",        text:"האם היסוד הוא מרכיב עיקרי במלח הבישול?", symbols:["Na","Cl"] },
+  { key:"teeth",       text:"האם היסוד חשוב לבניית עצמות ושיניים חזקות?", symbols:["Ca","F","P"] },
+  { key:"disinfect",   text:"האם היסוד משמש לחיטוי (כמו חיטוי פצעים או מי שתייה בבריכה)?", symbols:["Cl","I","Br"] },
+  { key:"glass",       text:"האם היסוד משמש בייצור זכוכית?", symbols:["Si","B"] },
+  { key:"wires",       text:"האם היסוד הוא חומר הגלם העיקרי לחוטי חשמל?", symbols:["Cu"] },
+  { key:"galvanize",   text:"האם היסוד משמש לציפוי מתכות כדי למנוע מהן להחליד?", symbols:["Zn"] },
+  { key:"stainless",   text:"האם היסוד משמש בייצור פלדת אל-חלד (סטיינלס)?", symbols:["Cr","Ni"] },
+  { key:"fuel",        text:"האם היסוד משמש כדלק (לרקטות, למכוניות או כפחם)?", symbols:["H","C"] },
+  { key:"coins",       text:"האם היסוד משמש בייצור מטבעות?", symbols:["Cu","Ni","Ag"] },
+  { key:"fireworks",   text:"האם היסוד משמש בייצור זיקוקים ותאורה בהירה במיוחד?", symbols:["Mg"] },
+  { key:"cans",        text:"האם היסוד משמש בייצור קופסאות שימורים ונייר כסף למטבח?", symbols:["Al"] },
+  { key:"fertilizer",  text:"האם היסוד הוא מרכיב עיקרי בדשנים לחקלאות?", symbols:["N","P","K"] },
+  { key:"matches",     text:"האם היסוד משמש בייצור ראשי גפרורים?", symbols:["P","S"] },
+  { key:"chips",       text:"האם היסוד משמש בייצור שבבים אלקטרוניים ופאנלים סולריים?", symbols:["Si"] },
+  { key:"blood",       text:"האם היסוד הוא חלק ממולקולה שנושאת חמצן בדם שלנו?", symbols:["Fe"] },
+  { key:"aviation",    text:"האם היסוד משמש בתעשיית התעופה ובתותבות רפואיות?", symbols:["Ti"] },
+  { key:"liquidmetal", text:"האם היסוד הוא מתכת שנוזלית בטמפרטורת החדר (כמו בכספית של מדי חום ישנים)?", symbols:["Hg"] },
+  { key:"drill",       text:"האם היסוד משמש בייצור מקדחים וכלי חיתוך קשים במיוחד?", symbols:["W"] },
+  { key:"carbattery",  text:"האם היסוד משמש במצברי רכב?", symbols:["Pb"] },
+  { key:"catalytic",   text:"האם היסוד משמש כזרז (קטליזטור) במפלט של מכוניות?", symbols:["Pt"] },
+  { key:"organic",     text:"האם היסוד הוא הבסיס לכל החומרים האורגניים (כמו ביהלום או בעיפרון)?", symbols:["C"] },
+  { key:"xray",        text:"האם היסוד משמש בחלונות למכשירי רנטגן ובסגסוגות קלות במיוחד?", symbols:["Be"] },
+  { key:"steel",       text:"האם היסוד משמש בייצור פלדה חזקה?", symbols:["Fe","Mn"] },
+  { key:"magnet",      text:"האם היסוד נמשך למגנט?", symbols:["Fe","Co","Ni"] }
+];
 
 const ELEMENTS = [
   {name:"מימן", symbol:"H", number:1, family:"nonmetal", metal:false, state:"gas", magnetic:false, inBody:true, conducts:false, colorful:false, useCat:"energy", use:"דלק לרקטות ומרכיב עיקרי במים", color:"חסר צבע"},
@@ -597,28 +622,22 @@ function getBestQuestion(list) {
     candidates.push({ key, text, pred, score });
   }
 
-  // תכונות כימיות ופיזיקליות בסיסיות
-  tryQuestion("metal", "האם היסוד הוא מתכת?", e => e.metal);
+  // תכונות פיזיקליות בסיסיות - אובייקטיביות וקלות לבדיקה (אין צורך לזכור בעל-פה)
+  tryQuestion("metal", "האם היסוד הוא מתכת מבריקה וקשיחה?", e => e.metal);
   tryQuestion("gas", "האם היסוד הוא גז בטמפרטורת החדר?", e => e.state === "gas");
   tryQuestion("liquid", "האם היסוד הוא נוזל בטמפרטורת החדר?", e => e.state === "liquid");
   tryQuestion("solid", "האם היסוד הוא מוצק בטמפרטורת החדר?", e => e.state === "solid");
-  tryQuestion("magnetic", "האם היסוד מגנטי - כלומר נדבק למגנט (כמו ברזל)?", e => e.magnetic);
-  tryQuestion("body", "האם היסוד נמצא בגוף שלנו וממלא בו תפקיד (למשל בעצמות, בדם או באוויר שאנחנו נושמים)?", e => e.inBody);
-  tryQuestion("conduct", "האם היסוד מוליך חשמל היטב (כמו בחוטי חשמל)?", e => e.conducts);
-  tryQuestion("colorful", "האם ליסוד יש צבע בולט ומיוחד (לא אפור/כסוף)?", e => e.colorful);
+
+  // בנק שאלות קונקרטיות - לכל שאלה רשימת יסודות מפורשת וברורה מראש (ללא הסקה אוטומטית מקטגוריה מעורפלת)
+  CONCRETE_QUESTIONS.forEach(q => {
+    tryQuestion(q.key, q.text, e => q.symbols.includes(e.symbol));
+  });
 
   // שאלות על קבוצה/סדרה כימית - כל קטגוריה שקיימת עדיין בין הנשארים
   const familiesPresent = new Set(list.map(e => e.family));
   familiesPresent.forEach(famKey => {
-    const famName = FAMILIES[famKey].name; // השם כבר כולל את המילה "משפחת"/"סדרת" בהתאם, או שם קטגוריה כללי
+    const famName = FAMILIES[famKey].name; // השם כבר כולל את המילה "משפחת"/"סדרת" בהתאם, וגם דוגמה מוכרת
     tryQuestion("family:" + famKey, `האם היסוד שייך ל${famName}?`, e => e.family === famKey);
-  });
-
-  // שאלות על תחום השימוש העיקרי - כל קטגוריה שקיימת עדיין בין הנשארים
-  const usesPresent = new Set(list.map(e => e.useCat));
-  usesPresent.forEach(useKey => {
-    const useName = USES_WITH_EXAMPLES[useKey];
-    tryQuestion("use:" + useKey, `האם השימוש העיקרי של היסוד קשור ל${useName}?`, e => e.useCat === useKey);
   });
 
   if (candidates.length === 0) return null;
