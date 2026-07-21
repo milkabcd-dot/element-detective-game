@@ -368,7 +368,7 @@ features:{ state:"solid", type:"metal", alkali:false, noble:false, magnet:false,
 name:"בור", symbol:"B", number:5,
 stateHeb:"מוצק",
 summary:"תרכובות בור משמשות לייצור זכוכית מסוג פיירקס, העמידה בפני זעזועים תרמיים ושינויי טמפרטורה קיצוניים.",
-extra:["• מצב צבירה בטמפרטורת החדר: מוצק","• נמצא בטבע בתרכובות ולא כיסוד חופשי.","• משמש בזכוכית עמידה לחום.","• בעל תכונות بين מתכת לאל-מתכת."],
+extra:["• מצב צבירה בטמפרטורת החדר: מוצק","• נמצא בטבע בתרכובות ולא כיסוד חופשי.","• משמש בזכוכית עמידה לחום.","• בעל תכונות בין מתכת לאל-מתכת."],
 features:{ state:"solid", type:"metalloid", alkali:false, noble:false, magnet:false, tech:true }
 },
 
@@ -623,9 +623,10 @@ features:{ state:"solid", type:"metal", alkali:false, noble:false, magnet:false,
 ];
 
 // =========================
-// הגדרת השאלות הראשיות בסדר קבוע מראש
+// הגדרת השאלות לפי שלבים מופרדים לחלוטין
 // =========================
 
+// שלב 1: ארבע שאלות ראשונות קבועות לחלוטין בסדר המבוקש (גז, נוזל, מתכת, מתכת אלקלית)
 const fixedInitialQuestions = [
 {
 text: "האם היסוד הוא גז בטמפרטורת החדר?",
@@ -645,6 +646,7 @@ checker: e => e.features.alkali === true
 }
 ];
 
+// שלב 2: שאלות כלליות (ללא שבבים!)
 const generalQuestions = [
 {
 text: "האם היסוד שייך למשפחת הגזים האצילים?",
@@ -653,12 +655,14 @@ checker: e => e.features.noble === true
 {
 text: "האם היסוד נמשך למגנט?",
 checker: e => e.features.magnet === true
-},
-{
-text: "האם היסוד קשור באופן מרכזי לתעשייה טכנולוגית, שבבים, אלקטרוניקה או סוללות?",
-checker: e => e.features.tech === true
 }
 ];
+
+// שלב 3: שאלה על טכנולוגיה ושבבים – מורחק לסוף התור הכללי
+const techQuestion = {
+text: "האם היסוד קשור באופן מרכזי לתעשייה טכנולוגית, שבבים, אלקטרוניקה או סוללות?",
+checker: e => e.features.tech === true
+};
 
 const specificQuestions = [
 {
@@ -810,11 +814,11 @@ let remaining = [];
 let currentQuestion = null;
 let asked = [];
 
-// בחירת השאלה הבאה לפי ההיררכיה המבוקשת
+// בחירת השאלה הבאה לפי שלבים מוקפדים
 
 function getNextQuestion(){
 
-// 1. מעבר קבוע על ארבע השאלות הראשונות בסדר מדויק
+// שלב 1: מעבר קבוע על 4 השאלות הראשונות בסדר מדויק
 for(let q of fixedInitialQuestions){
 if(!asked.includes(q.text)){
 let yesCount = remaining.filter(e => q.checker(e)).length;
@@ -825,8 +829,28 @@ return q;
 }
 }
 
-// 2. שאר השאלות (כלליות ופרטניות)
-let available = [...generalQuestions, ...specificQuestions].filter(q => !asked.includes(q.text));
+// שלב 2: שאלות כלליות (גזים אצילים, מגנט)
+for(let q of generalQuestions){
+if(!asked.includes(q.text)){
+let yesCount = remaining.filter(e => q.checker(e)).length;
+let noCount = remaining.length - yesCount;
+if(yesCount > 0 && noCount > 0){
+return q;
+}
+}
+}
+
+// שלב 3: שאלת הטכנולוגיה/שבבים (מופיעה רק כאן, רחוק מההתחלה)
+if(!asked.includes(techQuestion.text)){
+let yesCount = remaining.filter(e => techQuestion.checker(e)).length;
+let noCount = remaining.length - yesCount;
+if(yesCount > 0 && noCount > 0){
+return techQuestion;
+}
+}
+
+// שלב 4: מעבר לשאלות פרטניות לפי חלוקה מתמטית מאוזנת
+let available = [...specificQuestions].filter(q => !asked.includes(q.text));
 
 let best = null;
 let bestDiff = Infinity;
