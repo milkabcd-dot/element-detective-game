@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -8,181 +9,259 @@
 
 <style>
 
-* {
-  box-sizing: border-box;
-}
-
 body {
-  font-family: Arial, "Segoe UI", sans-serif;
-  background: linear-gradient(135deg,#512da8,#0097a7);
-  min-height:100vh;
-  margin:0;
-  padding:20px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+    font-family: Arial, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg,#512da8,#0097a7);
+    margin:0;
+    min-height:100vh;
+    padding:20px;
 }
 
 .container {
-  background:white;
-  max-width:900px;
-  width:100%;
-  border-radius:25px;
-  padding:30px;
-  box-shadow:0 10px 30px #333;
+    max-width:950px;
+    margin:auto;
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 10px 30px #333;
 }
 
 h1 {
-  text-align:center;
-  color:#512da8;
-  font-size:40px;
+    text-align:center;
+    color:#512da8;
+    font-size:38px;
 }
 
 .subtitle {
-  text-align:center;
-  font-size:20px;
-  color:#555;
+    text-align:center;
+    font-size:20px;
+    line-height:1.6;
 }
 
+
 .screen {
-  display:none;
+    display:none;
 }
 
 .active {
-  display:block;
+    display:block;
 }
 
+
+/* רשימת יסודות */
 
 .elements-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
-  gap:12px;
-  margin:20px 0;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+    gap:12px;
+    margin:25px 0;
+
 }
 
 
-.element {
-  border:3px solid #0097a7;
-  border-radius:15px;
-  padding:10px;
-  text-align:center;
-  background:#f5ffff;
+.element-card {
+
+    border:2px solid #0097a7;
+    border-radius:15px;
+    padding:12px;
+    text-align:center;
+    background:#f4ffff;
+
 }
 
 
 .symbol {
-  font-size:30px;
-  font-weight:bold;
-  color:#512da8;
+
+    font-size:28px;
+    font-weight:bold;
+    color:#512da8;
+
 }
 
 
-.name {
-  font-size:16px;
+.element-name {
+
+    font-size:16px;
+
 }
+
+
+
+/* כפתורים */
 
 
 button {
 
-  border:none;
-  border-radius:30px;
-  padding:15px 35px;
-  font-size:20px;
-  cursor:pointer;
+    border:none;
+    border-radius:30px;
+    padding:14px 30px;
+    font-size:18px;
+    cursor:pointer;
 }
 
 
-.start {
-  display:block;
-  margin:auto;
-  background:#512da8;
-  color:white;
+.main-btn {
+
+    display:block;
+    margin:20px auto;
+    background:#512da8;
+    color:white;
+
+}
+
+
+.info-btn {
+
+    background:#0097a7;
+    color:white;
+    display:block;
+    margin:15px auto;
+
+}
+
+
+
+/* משחק */
+
+
+.question-box {
+
+    background:#f1f7ff;
+    border:3px dashed #512da8;
+    border-radius:20px;
+    padding:30px;
+    text-align:center;
+
 }
 
 
 .question {
-  background:#f3f8ff;
-  border:3px dashed #512da8;
-  border-radius:20px;
-  padding:30px;
-  text-align:center;
-  font-size:28px;
+
+    font-size:26px;
+    font-weight:bold;
+
 }
 
 
-.answers {
-  text-align:center;
-  margin-top:20px;
+.answer-btn {
+
+    padding:15px 40px;
+    margin:15px;
+    color:white;
+
 }
 
 
 .yes {
- background:#27ae60;
- color:white;
- margin:10px;
+
+    background:#27ae60;
+
 }
 
 
 .no {
- background:#e74c3c;
- color:white;
- margin:10px;
+
+    background:#e74c3c;
+
 }
+
 
 
 .progress {
- text-align:center;
- font-size:22px;
- margin:20px;
+
+    text-align:center;
+    font-size:22px;
+    margin:20px;
+
 }
+
+
+
+/* תוצאה */
 
 
 .result {
- text-align:center;
- background:#fff8dc;
- border-radius:20px;
- padding:30px;
+
+    text-align:center;
+    background:#fff8dc;
+    border-radius:20px;
+    padding:30px;
+
 }
 
 
-.credit {
- text-align:center;
- margin-top:25px;
- color:#777;
- font-size:14px;
+.result h2 {
+
+    color:#512da8;
+
+}
+
+
+.summary {
+
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    text-align:right;
+    line-height:1.8;
+
+}
+
+
+/* חלון מידע */
+
+
+.modal {
+
+    display:none;
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    background:#0008;
+
+}
+
+
+.modal-box {
+
+    background:white;
+    margin:5%;
+    padding:25px;
+    border-radius:20px;
+    max-height:80vh;
+    overflow:auto;
+
 }
 
 
 table {
- width:100%;
- border-collapse:collapse;
+
+    width:100%;
+    border-collapse:collapse;
+
 }
+
 
 td,th {
- border:1px solid #ccc;
- padding:8px;
- text-align:center;
+
+    border:1px solid #aaa;
+    padding:8px;
+    text-align:center;
+
 }
 
 
-.modal {
- display:none;
- position:fixed;
- top:0;
- left:0;
- right:0;
- bottom:0;
- background:#0008;
-}
 
+.credit {
 
-.modal-content {
- background:white;
- margin:5%;
- padding:20px;
- border-radius:20px;
- max-height:80vh;
- overflow:auto;
+    text-align:center;
+    margin-top:25px;
+    color:#777;
+    font-size:14px;
+
 }
 
 
@@ -199,27 +278,53 @@ td,th {
 
 <h1>🔬 היסוד הסודי 🔬</h1>
 
+
 <p class="subtitle">
-בחרו יסוד בלב מתוך הרשימה.<br>
-קראו עליו בטבלת העזר, למדו עליו כמה פרטים,<br>
+
+בחרו <strong>יסוד בלב</strong> מתוך הרשימה.<br>
+
+קראו עליו בטבלת המידע, למדו כמה פרטים,<br>
+
 וענו על שאלות כן/לא.<br>
+
 המחשב ינסה לגלות איזה יסוד בחרתם!
+
+<br><br>
+
+⚠️ אין ללחוץ על יסוד. רק לבחור יסוד ולזכור אותו.
+
 </p>
 
 
 
-<div id="intro" class="screen active">
+<!-- מסך פתיחה -->
 
-<button onclick="openTable()">
-📚 טבלת מידע על היסודות
+<div id="startScreen" class="screen active">
+
+
+<button class="info-btn" onclick="openInfo()">
+
+📚 מידע על היסודות
+
 </button>
 
 
-<div id="elements" class="elements-grid"></div>
+
+<h2 style="text-align:center">
+רשימת היסודות במשחק
+</h2>
 
 
-<button class="start" onclick="startGame()">
-🚀 מתחילים
+<div id="elementList" class="elements-grid">
+
+</div>
+
+
+
+<button class="main-btn" onclick="startGame()">
+
+🚀 התחילו משחק
+
 </button>
 
 
@@ -227,69 +332,100 @@ td,th {
 
 
 
-<div id="game" class="screen">
+
+
+<!-- מסך משחק -->
+
+
+<div id="gameScreen" class="screen">
 
 
 <div class="progress">
+
 נשארו:
-<span id="count"></span>
-יסודות
+<span id="counter"></span>
+יסודות אפשריים
+
 </div>
 
 
-<div class="question">
 
-<div id="questionText">
+<div class="question-box">
+
+<div id="questionText" class="question">
+
 </div>
 
 
-<div class="answers">
-
-<button class="yes" onclick="answer(true)">
+<button class="answer-btn yes"
+onclick="answer(true)">
 ✔ כן
 </button>
 
 
-<button class="no" onclick="answer(false)">
+<button class="answer-btn no"
+onclick="answer(false)">
 ✘ לא
 </button>
 
 
 </div>
 
-</div>
 
-
-
-<div id="gameElements" class="elements-grid"></div>
-
+<div id="gameList" class="elements-grid">
 
 </div>
 
 
+</div>
 
 
-<div id="result" class="screen">
+
+
+
+<!-- מסך סיום -->
+
+
+<div id="resultScreen" class="screen">
 
 
 <div class="result">
 
-<h2>מצאתי!</h2>
+<h2>
+🎉 המחשב גילה!
+</h2>
 
-<h1 id="resultName"></h1>
+
+<h1 id="finalElement"></h1>
+
+
+<div id="finalSummary" class="summary">
+
+</div>
+
+
+<h3>
+משימת סיכום לתלמידים:
+</h3>
 
 
 <p>
-סימול:
-<span id="resultSymbol"></span>
+בחרו יסוד אחד. סכמו עליו בקצרה:
+<br>
+• שם היסוד והסימול שלו  
+<br>
+• היכן מוצאים אותו?
+<br>
+• מדוע הוא חשוב?
+<br>
+• שימוש מעניין אחד שלו
 </p>
 
 
-<p id="resultUse"></p>
+<button class="main-btn" onclick="restart()">
 
-
-<button class="start" onclick="restart()">
 🔄 משחק חדש
+
 </button>
 
 
@@ -299,24 +435,37 @@ td,th {
 </div>
 
 
+
 <div class="credit">
+
 עריכה: מילכה ברקו גרש
-</div>
-
 
 </div>
 
 
+</div>
 
-<div id="modal" class="modal">
 
-<div class="modal-content">
 
-<button onclick="closeTable()">סגור</button>
+<!-- חלון מידע -->
 
-<h2>טבלת עזר</h2>
+<div id="infoWindow" class="modal">
 
-<table id="infoTable"></table>
+<div class="modal-box">
+
+<button onclick="closeInfo()">
+סגירה
+</button>
+
+
+<h2>
+טבלת מידע על היסודות
+</h2>
+
+
+<table id="infoTable">
+
+</table>
 
 
 </div>
@@ -326,281 +475,265 @@ td,th {
 
 
 <script>
-    // ===============================
+  // ===============================
 // מאגר יסודות
 // ===============================
 
 const elements = [
 
 {
-name:"חמצן",
-symbol:"O",
-number:8,
-use:"חיוני לנשימה ולתהליך הפקת אנרגיה בתאי הגוף",
-air:true,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:false
+name:"מימן",
+symbol:"H",
+number:1,
+place:"מרכיב במים ובכוכבים",
+important:"היסוד הקל ביותר ומשמש מקור אנרגיה",
+use:"דלק לרקטות והפקת אנרגיה",
+features:["gas"]
 },
 
 {
-name:"חנקן",
-symbol:"N",
-number:7,
-use:"מרכיב עיקרי באוויר ומשמש לייצור דשנים",
-air:true,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:false
-},
-
-{
-name:"ארגון",
-symbol:"Ar",
-number:18,
-use:"משמש למילוי נורות ולריתוך מתכות",
-air:true,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:false
-},
-
-{
-name:"ברזל",
-symbol:"Fe",
-number:26,
-use:"מרכיב חשוב בהמוגלובין שבדם ומשמש לייצור פלדה",
-air:false,
-blood:true,
-bones:false,
-electric:false,
-magnet:true,
-metal:true
-},
-
-{
-name:"סידן",
-symbol:"Ca",
-number:20,
-use:"מרכיב חשוב בעצמות ובשיניים",
-air:false,
-blood:false,
-bones:true,
-electric:false,
-magnet:false,
-metal:true
-},
-
-{
-name:"נחושת",
-symbol:"Cu",
-number:29,
-use:"משמשת לייצור חוטי חשמל בגלל הולכת חשמל טובה",
-air:false,
-blood:false,
-bones:false,
-electric:true,
-magnet:false,
-metal:true
-},
-
-{
-name:"אלומיניום",
-symbol:"Al",
-number:13,
-use:"משמש לייצור פחיות, מטוסים ומוצרי מטבח",
-air:false,
-blood:false,
-bones:false,
-electric:true,
-magnet:false,
-metal:true
-},
-
-{
-name:"זהב",
-symbol:"Au",
-number:79,
-use:"משמש לתכשיטים ולרכיבים אלקטרוניים",
-air:false,
-blood:false,
-bones:false,
-electric:true,
-magnet:false,
-metal:true
-},
-
-{
-name:"ליתיום",
-symbol:"Li",
-number:3,
-use:"משמש בסוללות נטענות של טלפונים ומכוניות חשמליות",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:true
-},
-
-{
-name:"כלור",
-symbol:"Cl",
-number:17,
-use:"משמש לחיטוי מים ובריכות",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:false
+name:"הליום",
+symbol:"He",
+number:2,
+place:"נמצא בכמויות קטנות באטמוספרה",
+important:"גז אציל שאינו מגיב כמעט עם חומרים אחרים",
+use:"מילוי בלונים וקירור מכשירים מדעיים",
+features:["gas"]
 },
 
 {
 name:"פחמן",
 symbol:"C",
 number:6,
-use:"הבסיס לחומרים אורגניים כמו יצורים חיים",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:false
+place:"ביצורים חיים, בפחם וביהלומים",
+important:"הבסיס לכל החומרים האורגניים",
+use:"דלקים, גרפיט ויהלומים",
+features:["life"]
+},
+
+{
+name:"חנקן",
+symbol:"N",
+number:7,
+place:"מרכיב עיקרי באוויר",
+important:"דרוש ליצירת חלבונים וחשוב לצמחים",
+use:"ייצור דשנים",
+features:["air"]
+},
+
+{
+name:"חמצן",
+symbol:"O",
+number:8,
+place:"באטמוספרה ובמים",
+important:"חיוני לנשימה ולהפקת אנרגיה בגוף",
+use:"רפואה ותעשייה",
+features:["air"]
+},
+
+{
+name:"נתרן",
+symbol:"Na",
+number:11,
+place:"במלח הבישול",
+important:"חשוב לפעילות עצבים ושרירים",
+use:"ייצור מלח וחומרים כימיים",
+features:["body"]
 },
 
 {
 name:"מגנזיום",
 symbol:"Mg",
 number:12,
-use:"משמש בזיקוקים ובסגסוגות קלות",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:false,
-metal:true
+place:"בסלעים ובמי ים",
+important:"חשוב לתהליכים בגוף הצמחים ובעלי החיים",
+use:"סגסוגות קלות וזיקוקים",
+features:["metal"]
+},
+
+{
+name:"אלומיניום",
+symbol:"Al",
+number:13,
+place:"בעפרות באדמה",
+important:"מתכת קלה ועמידה",
+use:"מטוסים, פחיות ונייר כסף",
+features:["metal","electric"]
 },
 
 {
 name:"צורן",
 symbol:"Si",
 number:14,
-use:"משמש לייצור שבבים אלקטרוניים ופאנלים סולריים",
-air:false,
-blood:false,
-bones:false,
-electric:true,
-magnet:false,
-metal:false
+place:"בחול ובסלעים",
+important:"מרכיב מרכזי בקרום כדור הארץ",
+use:"שבבים אלקטרוניים ופאנלים סולריים",
+features:["computer"]
 },
 
 {
-name:"ניקל",
-symbol:"Ni",
-number:28,
-use:"משמש בסוללות ובפלדת אל-חלד",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:true,
-metal:true
+name:"זרחן",
+symbol:"P",
+number:15,
+place:"בסלעים וביצורים חיים",
+important:"חשוב לעצמות ולתאים",
+use:"דשנים וראשי גפרורים",
+features:["body"]
+},
+
+{
+name:"גופרית",
+symbol:"S",
+number:16,
+place:"בסלעים ובמעיינות",
+important:"מרכיב בחלבונים",
+use:"ייצור חומרים כימיים",
+features:["body"]
+},
+
+{
+name:"כלור",
+symbol:"Cl",
+number:17,
+place:"במלחים כמו מלח בישול",
+important:"משמש לחיטוי",
+use:"חיטוי מים ובריכות",
+features:["clean"]
+},
+
+{
+name:"ארגון",
+symbol:"Ar",
+number:18,
+place:"בכמויות קטנות באוויר",
+important:"גז יציב שאינו מגיב",
+use:"נורות וריתוך",
+features:["air"]
+},
+
+{
+name:"אשלגן",
+symbol:"K",
+number:19,
+place:"במינרלים וביצורים חיים",
+important:"חשוב לפעילות עצבים ושרירים",
+use:"דשנים",
+features:["body"]
+},
+
+{
+name:"סידן",
+symbol:"Ca",
+number:20,
+place:"בעצמות, בשיניים ובסלעי גיר",
+important:"מרכיב חשוב בעצמות ובשיניים",
+use:"מלט וחומרי בנייה",
+features:["bones"]
+},
+
+{
+name:"ברזל",
+symbol:"Fe",
+number:26,
+place:"בסלעים ובגוף האדם",
+important:"מרכיב בהמוגלובין שמעביר חמצן בדם",
+use:"פלדה ובנייה",
+features:["blood","magnet","metal"]
 },
 
 {
 name:"קובלט",
 symbol:"Co",
 number:27,
-use:"משמש בסוללות וביצירת צבעים כחולים",
-air:false,
-blood:false,
-bones:false,
-electric:false,
-magnet:true,
-metal:true
+place:"בסלעים ובמינרלים",
+important:"מתכת בעלת תכונות מגנטיות",
+use:"סוללות וצבעים כחולים",
+features:["magnet","metal"]
+},
+
+{
+name:"ניקל",
+symbol:"Ni",
+number:28,
+place:"בסלעים",
+important:"עמיד בפני חלודה",
+use:"פלדת אל-חלד וסוללות",
+features:["magnet","metal"]
+},
+
+{
+name:"נחושת",
+symbol:"Cu",
+number:29,
+place:"בעפרות נחושת",
+important:"מוליך חשמל מצוין",
+use:"חוטי חשמל",
+features:["electric","metal"]
+},
+
+{
+name:"אבץ",
+symbol:"Zn",
+number:30,
+place:"בסלעים",
+important:"מגן על מתכות מפני חלודה",
+use:"ציפוי ברזל (גלוון)",
+features:["metal"]
+},
+
+{
+name:"כסף",
+symbol:"Ag",
+number:47,
+place:"בעפרות כסף",
+important:"מתכת בעלת הולכת חשמל גבוהה",
+use:"תכשיטים ורכיבים אלקטרוניים",
+features:["metal"]
+},
+
+{
+name:"יוד",
+symbol:"I",
+number:53,
+place:"במי ים וביצורים חיים",
+important:"חיוני לפעילות בלוטת התריס",
+use:"חיטוי ותוספי תזונה",
+features:["body","clean"]
+},
+
+{
+name:"זהב",
+symbol:"Au",
+number:79,
+place:"בסלעים ובמכרות",
+important:"מתכת שאינה מחלידה",
+use:"תכשיטים ואלקטרוניקה",
+features:["metal"]
 }
 
 ];
 
 
 // ===============================
-// שאלות ברורות לתלמידים
+// הצגת רשימת יסודות
 // ===============================
-
-
-const questions=[
-
-{
-text:"האם היסוד הוא מרכיב חשוב בעצמות ובשיניים?",
-check:e=>e.bones
-},
-
-{
-text:"האם היסוד הוא מרכיב חשוב בהמוגלובין שבדם?",
-check:e=>e.blood
-},
-
-{
-text:"האם היסוד נמצא בכמות גדולה באוויר שאנו נושמים?",
-check:e=>e.air
-},
-
-{
-text:"האם היסוד משמש להעברת חשמל בחוטים?",
-check:e=>e.electric
-},
-
-{
-text:"האם היסוד נמשך למגנט?",
-check:e=>e.magnet
-},
-
-{
-text:"האם היסוד הוא מתכת?",
-check:e=>e.metal
-}
-
-];
-
-
-
-// ===============================
-// מנגנון המשחק
-// ===============================
-
-
-let remaining=[];
-let currentQuestion;
-
 
 
 function showElements(id,list){
 
-let div=document.getElementById(id);
+let box=document.getElementById(id);
 
-div.innerHTML="";
-
+box.innerHTML="";
 
 list.forEach(e=>{
 
-div.innerHTML+=`
+box.innerHTML+=`
 
-<div class="element">
+<div class="element-card">
 
-<div class="symbol">
-${e.symbol}
-</div>
+<div class="symbol">${e.symbol}</div>
 
-<div class="name">
-${e.name}
-</div>
+<div class="element-name">${e.name}</div>
 
 </div>
 
@@ -611,124 +744,12 @@ ${e.name}
 }
 
 
-
-function startGame(){
-
-remaining=[...elements];
-
-document.getElementById("intro").classList.remove("active");
-
-document.getElementById("game").classList.add("active");
-
-showElements("gameElements",remaining);
-
-nextQuestion();
-
-}
-
-
-
-function nextQuestion(){
-
-if(remaining.length<=1){
-
-showResult(remaining[0]);
-
-return;
-
-}
-
-
-currentQuestion=
-questions.find(q=>{
-
-let yes=remaining.filter(q.check).length;
-
-return yes>0 && yes<remaining.length;
-
-});
-
-
-if(!currentQuestion){
-
-showResult(remaining[0]);
-
-return;
-
-}
-
-
-document.getElementById("questionText").innerHTML=
-currentQuestion.text;
-
-
-document.getElementById("count").innerHTML=
-remaining.length;
-
-
-}
-
-
-
-function answer(value){
-
-
-remaining=
-remaining.filter(e=>
-currentQuestion.check(e)==value
-);
-
-
-showElements("gameElements",remaining);
-
-
-nextQuestion();
-
-
-}
-
-
-
-function showResult(e){
-
-
-document.getElementById("game").classList.remove("active");
-
-document.getElementById("result").classList.add("active");
-
-
-document.getElementById("resultName").innerHTML=
-e.name+" ("+e.symbol+")";
-
-
-document.getElementById("resultSymbol").innerHTML=
-e.number;
-
-
-document.getElementById("resultUse").innerHTML=
-"💡 "+e.use;
-
-
-}
-
-
-
-function restart(){
-
-document.getElementById("result").classList.remove("active");
-
-document.getElementById("intro").classList.add("active");
-
-}
-
-
-
 // ===============================
 // טבלת מידע
 // ===============================
 
 
-function openTable(){
+function openInfo(){
 
 let table=document.getElementById("infoTable");
 
@@ -738,8 +759,9 @@ table.innerHTML=
 <tr>
 <th>יסוד</th>
 <th>סימול</th>
-<th>מספר אטומי</th>
-<th>שימוש מרכזי</th>
+<th>איפה נמצא?</th>
+<th>חשיבות</th>
+<th>שימוש</th>
 </tr>
 `;
 
@@ -751,7 +773,8 @@ table.innerHTML+=`
 <tr>
 <td>${e.name}</td>
 <td>${e.symbol}</td>
-<td>${e.number}</td>
+<td>${e.place}</td>
+<td>${e.important}</td>
 <td>${e.use}</td>
 </tr>
 
@@ -760,20 +783,192 @@ table.innerHTML+=`
 });
 
 
-document.getElementById("modal").style.display="block";
+document.getElementById("infoWindow").style.display="block";
+
+}
+
+
+function closeInfo(){
+
+document.getElementById("infoWindow").style.display="none";
 
 }
 
 
 
-function closeTable(){
+// ===============================
+// מנגנון המשחק
+// ===============================
 
-document.getElementById("modal").style.display="none";
+
+let remaining=[];
+let currentQuestion=null;
+
+
+
+const questions=[
+
+{
+text:"האם היסוד הוא מרכיב חשוב בעצמות ובשיניים?",
+feature:"bones"
+},
+
+{
+text:"האם היסוד הוא מרכיב חשוב בדם?",
+feature:"blood"
+},
+
+{
+text:"האם היסוד נמצא בכמות גדולה באוויר?",
+feature:"air"
+},
+
+{
+text:"האם היסוד משמש לחיטוי מים?",
+feature:"clean"
+},
+
+{
+text:"האם היסוד מוליך חשמל?",
+feature:"electric"
+},
+
+{
+text:"האם היסוד הוא בעל תכונות מגנטיות?",
+feature:"magnet"
+},
+
+{
+text:"האם היסוד הוא מתכת?",
+feature:"metal"
+}
+
+];
+
+
+
+function startGame(){
+
+remaining=[...elements];
+
+document.getElementById("startScreen")
+.classList.remove("active");
+
+document.getElementById("gameScreen")
+.classList.add("active");
+
+
+showElements("gameList",remaining);
+
+nextQuestion();
 
 }
 
+
+
+function nextQuestion(){
+
+if(remaining.length===1){
+
+finish();
+
+return;
+
+}
+
+
+currentQuestion=
+questions.find(q=>{
+
+let yes=
+remaining.filter(e=>
+e.features.includes(q.feature)
+).length;
+
+
+return yes>0 && yes<remaining.length;
+
+});
+
+
+if(!currentQuestion){
+
+finish();
+
+return;
+
+}
+
+
+document.getElementById("questionText")
+.innerHTML=currentQuestion.text;
+
+
+document.getElementById("counter")
+.innerHTML=remaining.length;
+
+}
+
+
+
+function answer(answer){
+
+
+remaining=
+remaining.filter(e=>
+
+e.features.includes(currentQuestion.feature)
+===answer
+
+);
+
+
+showElements("gameList",remaining);
+
+nextQuestion();
+
+}
+
+
+
+function finish(){
+
+let e=remaining[0];
+
+
+document.getElementById("gameScreen")
+.classList.remove("active");
+
+
+document.getElementById("resultScreen")
+.classList.add("active");
+
+
+document.getElementById("finalElement")
+.innerHTML=
+e.name+" ("+e.symbol+")";
+
+
+document.getElementById("finalSummary")
+.innerHTML=
+`
+<strong>מספר אטומי:</strong> ${e.number}<br>
+<strong>איפה נמצא:</strong> ${e.place}<br>
+<strong>חשיבות:</strong> ${e.important}<br>
+<strong>שימוש:</strong> ${e.use}
+`;
+
+}
+
+
+
+function restart(){
+
+location.reload();
+
+}
 
 
 // טעינה ראשונית
 
-showElements("elements",elements);
+showElements("elementList",elements);
