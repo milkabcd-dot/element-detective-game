@@ -127,6 +127,9 @@ button {
  max-height: 280px;
  overflow-y: auto;
  padding: 5px;
+ border: 1px solid #e5e7eb;
+ border-radius: 16px;
+ background: #fdfdfd;
 }
 
 .element {
@@ -289,7 +292,7 @@ footer {
 <h1>✨ סוד היסוד ✨</h1>
 
 <p class="subtitle">
-בחרו יסוד בלב, נעזרו בכרטיסי המידע, והמחשב ינסה לגלות איזה יסוד בחרתם
+בחרו יסוד בלב, היעזרו בכרטיסי המידע, והמחשב ינסה לגלות איזה יסוד בחרתם
 </p>
 
 <!-- מסך פתיחה -->
@@ -300,6 +303,7 @@ footer {
 💡 לחצו כאן לצפייה בכרטיסי המידע ועזרה למשחק
 </button>
 
+<div style="font-weight: 700; color: var(--primary-dark); margin-bottom: 8px;">רשימת היסודות האפשריים למשחק:</div>
 <div id="elementsList" class="elements-grid"></div>
 
 <button class="big-btn" onclick="startGame()">
@@ -854,7 +858,7 @@ text:"האם היסוד הוא מתכת מגנטית שמשתתפת בייצור
 symbols:["Co"]
 },
 {
-text:"ה### היסוד הוא מתכת חסינה לקורוזיה שנמשכת למגנט ומשמשת להטבעת מטבעות?",
+text:"האם היסוד הוא מתכת חסינה לקורוזיה שנמשכת למגנט ומשמשת להטבעת מטבעות?",
 symbols:["Ni"]
 },
 {
