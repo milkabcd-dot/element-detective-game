@@ -4,334 +4,357 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>היסוד הסודי - משחק כימיה</title>
+<title>סוד היסוד - משחק כימיה</title>
 
 <style>
-
-*{
- box-sizing:border-box;
+:root {
+ --primary: #3b82f6;
+ --primary-dark: #1d4ed8;
+ --accent: #10b981;
+ --bg-gradient: linear-gradient(135deg, #0f172a, #1e3a8a, #065f46);
+ --card-bg: #ffffff;
+ --text-main: #1f2937;
+ --text-muted: #6b7280;
 }
 
-body{
- font-family:Arial,"Segoe UI",sans-serif;
- background:linear-gradient(135deg,#4b1fa8,#17a2b8);
- min-height:100vh;
- margin:0;
- padding:20px;
- direction:rtl;
+* {
+ box-sizing: border-box;
 }
 
-.container{
- max-width:900px;
- margin:auto;
- background:white;
- border-radius:25px;
- padding:30px;
- box-shadow:0 10px 30px #333;
+body {
+ font-family: "Segoe UI", Arial, sans-serif;
+ background: var(--bg-gradient);
+ min-height: 100vh;
+ margin: 0;
+ padding: 20px;
+ direction: rtl;
+ color: var(--text-main);
 }
 
-h1{
- text-align:center;
- color:#5420a8;
- font-size:38px;
+.container {
+ max-width: 950px;
+ margin: auto;
+ background: var(--card-bg);
+ border-radius: 24px;
+ padding: 40px;
+ box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
-.subtitle{
- text-align:center;
- color:#555;
- font-size:20px;
+h1 {
+ text-align: center;
+ color: var(--primary-dark);
+ font-size: 40px;
+ margin-bottom: 10px;
+ font-weight: 800;
 }
 
-.screen{
- display:none;
+.subtitle {
+ text-align: center;
+ color: var(--text-muted);
+ font-size: 18px;
+ margin-bottom: 30px;
 }
 
-.active{
- display:block;
+.screen {
+ display: none;
 }
 
-button{
- cursor:pointer;
+.active {
+ display: block;
+ animation: fadeIn 0.4s ease-in-out;
 }
 
-.big-btn{
- display:block;
- margin:25px auto;
- padding:15px 40px;
- border:none;
- border-radius:30px;
- background:#5420a8;
- color:white;
- font-size:22px;
- font-weight:bold;
+@keyframes fadeIn {
+ from { opacity: 0; transform: translateY(8px); }
+ to { opacity: 1; transform: translateY(0); }
 }
 
-.big-btn:hover{
- background:#17a2b8;
+button {
+ cursor: pointer;
+ font-family: inherit;
+ transition: all 0.2s ease;
 }
 
-
-.elements-grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
- gap:10px;
- margin-top:20px;
+.big-btn {
+ display: block;
+ margin: 20px auto 10px auto;
+ padding: 16px 45px;
+ border: none;
+ border-radius: 50px;
+ background: var(--primary);
+ color: white;
+ font-size: 20px;
+ font-weight: 700;
+ box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
 }
 
-
-.element{
- border:2px solid #ddd;
- border-radius:15px;
- padding:10px;
- text-align:center;
- background:#fafafa;
+.big-btn:hover {
+ background: var(--primary-dark);
+ transform: translateY(-2px);
+ box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
 }
 
-.symbol{
- font-size:28px;
- font-weight:bold;
- color:#5420a8;
+/* כפתור מידע בולט במיוחד */
+.hero-info-btn {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 12px;
+ width: 100%;
+ max-width: 500px;
+ margin: 0 auto 25px auto;
+ padding: 18px 30px;
+ border-radius: 20px;
+ border: 3px dashed var(--primary);
+ background: #eff6ff;
+ color: var(--primary-dark);
+ font-size: 20px;
+ font-weight: 800;
+ box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
-.name{
- font-weight:bold;
+.hero-info-btn:hover {
+ background: #dbeafe;
+ border-color: var(--primary-dark);
+ transform: scale(1.02);
 }
 
-
-.info-btn{
- display:block;
- margin:15px auto;
- padding:10px 25px;
- border-radius:25px;
- border:2px solid #5420a8;
- background:white;
- color:#5420a8;
- font-size:18px;
+.elements-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+ gap: 12px;
+ margin-top: 25px;
+ max-height: 280px;
+ overflow-y: auto;
+ padding: 5px;
 }
 
-
-.question-box{
- background:#eef7ff;
- border-radius:20px;
- padding:30px;
- text-align:center;
- margin:20px 0;
+.element {
+ border: 1px solid #e5e7eb;
+ border-radius: 14px;
+ padding: 12px 8px;
+ text-align: center;
+ background: #f9fafb;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
-.question{
- font-size:25px;
- font-weight:bold;
+.element strong {
+ font-size: 20px;
+ color: var(--primary-dark);
+ display: block;
+ margin-bottom: 4px;
 }
 
-
-.answer{
- padding:15px 40px;
- border-radius:30px;
- border:none;
- margin:10px;
- font-size:20px;
- color:white;
+.element span {
+ font-size: 13px;
+ color: var(--text-muted);
 }
 
-.yes{
- background:#27ae60;
+.question-box {
+ background: #f0fdf4;
+ border: 2px solid #bbf7d0;
+ border-radius: 20px;
+ padding: 40px 30px;
+ text-align: center;
+ margin: 30px 0;
+ box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
 }
 
-.no{
- background:#e74c3c;
+.question {
+ font-size: 26px;
+ font-weight: 700;
+ color: #065f46;
+ margin-bottom: 30px;
+ line-height: 1.4;
 }
 
-
-.card{
- background:#fff8e8;
- border-radius:20px;
- padding:25px;
- margin-top:20px;
+.answers-container {
+ display: flex;
+ justify-content: center;
+ gap: 20px;
 }
 
-.card h2{
- color:#5420a8;
+.answer {
+ padding: 14px 45px;
+ border-radius: 50px;
+ border: none;
+ font-size: 18px;
+ font-weight: 700;
+ color: white;
+ box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-
-.modal{
- display:none;
- position:fixed;
- top:0;
- left:0;
- width:100%;
- height:100%;
- background:#0008;
- justify-content:center;
- align-items:center;
+.answer:hover {
+ transform: scale(1.05);
 }
 
-
-.modal-content{
- background:white;
- width:90%;
- max-width:700px;
- max-height:80%;
- overflow:auto;
- border-radius:20px;
- padding:25px;
+.yes {
+ background: var(--accent);
 }
 
-
-.close{
- float:left;
- background:#e74c3c;
- color:white;
- border:none;
- border-radius:50%;
- width:35px;
- height:35px;
+.yes:hover {
+ background: #059669;
 }
 
-
-footer{
- text-align:center;
- margin-top:20px;
- color:#777;
+.no {
+ background: #ef4444;
 }
 
+.no:hover {
+ background: #dc2626;
+}
+
+#remaining {
+ text-align: center;
+ font-size: 16px;
+ color: var(--text-muted);
+ font-weight: 600;
+}
+
+.card {
+ background: #fffbeb;
+ border: 1px solid #fde68a;
+ border-radius: 20px;
+ padding: 30px;
+ margin-top: 20px;
+ box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.card h2 {
+ color: #b45309;
+ margin-top: 0;
+}
+
+.modal {
+ display: none;
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0, 0.6);
+ backdrop-filter: blur(4px);
+ justify-content: center;
+ align-items: center;
+ z-index: 100;
+}
+
+.modal-content {
+ background: white;
+ width: 90%;
+ max-width: 750px;
+ max-height: 80vh;
+ overflow-y: auto;
+ border-radius: 24px;
+ padding: 35px;
+ box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.close {
+ float: left;
+ background: #fee2e2;
+ color: #dc2626;
+ border: none;
+ border-radius: 50%;
+ width: 40px;
+ height: 40px;
+ font-weight: bold;
+ font-size: 18px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ cursor: pointer;
+}
+
+.close:hover {
+ background: #fecaca;
+}
+
+footer {
+ text-align: center;
+ margin-top: 35px;
+ color: var(--text-muted);
+ font-size: 14px;
+ border-top: 1px solid #f3f4f6;
+ padding-top: 20px;
+}
 </style>
 
 </head>
 
-
 <body>
-
 
 <div class="container">
 
-
-<h1>🔬 היסוד הסודי 🔬</h1>
+<h1>✨ סוד היסוד ✨</h1>
 
 <p class="subtitle">
-בחרו יסוד בלב, קראו עליו בכרטיס המידע,
-והמחשב ינסה לגלות איזה יסוד בחרתם
+בחרו יסוד בלב, נעזרו בכרטיסי המידע, והמחשב ינסה לגלות איזה יסוד בחרתם
 </p>
 
-
 <!-- מסך פתיחה -->
-
 <div id="start" class="screen active">
 
-
-<button class="info-btn" onclick="showInfo()">
-📋 רשימת יסודות ומידע
+<!-- כפתור מידע בולט למשתמשים -->
+<button class="hero-info-btn" onclick="showInfo()">
+💡 לחצו כאן לצפייה בכרטיסי המידע ועזרה למשחק
 </button>
 
-
 <div id="elementsList" class="elements-grid"></div>
-
 
 <button class="big-btn" onclick="startGame()">
 🚀 התחילו לשחק
 </button>
-
-
 </div>
-
-
 
 <!-- מסך משחק -->
-
-
 <div id="game" class="screen">
-
-
 <div class="question-box">
+<div id="question" class="question"></div>
 
-<div id="question" class="question">
+<div class="answers-container">
+<button class="answer yes" onclick="answer(true)">כן</button>
+<button class="answer no" onclick="answer(false)">לא</button>
 </div>
-
-
-<button class="answer yes" onclick="answer(true)">
-כן
-</button>
-
-
-<button class="answer no" onclick="answer(false)">
-לא
-</button>
-
 </div>
-
 
 <div id="remaining"></div>
-
-
 </div>
-
-
-
 
 <!-- מסך תוצאה -->
-
-
 <div id="result" class="screen">
-
-
 <div class="card">
-
 <h2>🎉 מצאתי את היסוד!</h2>
-
-<h1 id="found"></h1>
-
+<h1 id="found" style="color:#d97706; margin: 15px 0;"></h1>
 <div id="foundInfo"></div>
 
-
 <button class="big-btn" onclick="resetGame()">
-משחק חדש
+🔄 משחק חדש
 </button>
-
-
 </div>
-
-
 </div>
-
 
 <footer>
 עריכה: מילכה ברקו גרש
 </footer>
 
-
 </div>
-
-
 
 <!-- חלון מידע -->
-
-
 <div id="modal" class="modal">
-
 <div class="modal-content">
-
-<button class="close" onclick="closeInfo()">X</button>
-
-<h2>
-כרטיסי מידע על היסודות
-</h2>
-
-
-<div id="cards"></div>
-
-
+<button class="close" onclick="closeInfo()">✕</button>
+<h2 style="color: var(--primary-dark); margin-top:0;">כרטיסי מידע על היסודות</h2>
+<div id="cards" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;"></div>
 </div>
-
 </div>
-
 
 <script>
- // =========================
-// מאגר יסודות - חלק 2א
+// =========================
+// מאגר יסודות
 // =========================
 
 const elements = [
-
 {
 name:"מימן",
 symbol:"H",
@@ -341,16 +364,8 @@ extra:[
 "• גז חסר צבע וחסר ריח בטמפרטורת החדר.",
 "• נמצא בכמויות עצומות בכוכבים.",
 "• משמש כחומר דלק בחלק ממערכות החלל."
-],
-features:{
-gas:true,
-metal:false,
-body:false,
-magnet:false,
-technology:false,
-}
+]
 },
-
 {
 name:"הליום",
 symbol:"He",
@@ -360,17 +375,8 @@ extra:[
 "• כמעט שאינו מגיב עם יסודות אחרים.",
 "• קל יותר מהאוויר ולכן בלונים יכולים להתרומם.",
 "• משמש לקירור מערכות מדעיות מיוחדות."
-],
-features:{
-gas:true,
-metal:false,
-body:false,
-magnet:false,
-technology:false
-}
+]
 },
-
-
 {
 name:"ליתיום",
 symbol:"Li",
@@ -380,37 +386,19 @@ extra:[
 "• אחת המתכות הקלות ביותר.",
 "• בעלת צבע כסוף.",
 "• חשובה לטכנולוגיות של טלפונים ורכב חשמלי."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+]
 },
-
-
 {
 name:"בריליום",
 symbol:"Be",
 number:4,
-summary:"מתכת קלה וחזקה המשמשת בתעשיות מיוחדות.",
+summary:"מתכת קלה וחזקה המשמשת בתעשיות מיוחדות ובמכשור רפואי.",
 extra:[
-"• שקופה לקרני רנטגן ולכן שימושית במכשור רפואי.",
-"• קשה יחסית אך שבירה.",
-"• משמשת בסגסוגות מיוחדות."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• שקופה יחסית לקרני רנטגן.",
+"• קשה אך שבירה במצב גולמי.",
+"• משמשת בסגסוגות תעופתיות מתקדמות."
+]
 },
-
-
 {
 name:"בור",
 symbol:"B",
@@ -420,37 +408,19 @@ extra:[
 "• נמצא בטבע בתרכובות ולא כיסוד חופשי.",
 "• משמש בזכוכית עמידה לחום.",
 "• בעל תכונות בין מתכת לאל-מתכת."
-],
-features:{
-gas:false,
-metal:false,
-body:false,
-magnet:false,
-technology:true
-}
+]
 },
-
-
 {
 name:"פחמן",
 symbol:"C",
 number:6,
-summary:"יסוד מרכזי בכל היצורים החיים.",
+summary:"יסוד מרכזי בכל היצורים החיים ומופיע בצורות שונות כמו יהלום.",
 extra:[
-"• מופיע בצורות שונות כמו יהלום וגרפיט.",
+"• מופיע בצורות טבעיות שונות כמו יהלום וגרפיט.",
 "• נמצא בכל החומרים האורגניים.",
-"• יכול להיות גם קשה מאוד וגם רך מאוד."
-],
-features:{
-gas:false,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• בסיס הכימיה האורגנית בכדור הארץ."
+]
 },
-
-
 {
 name:"חנקן",
 symbol:"N",
@@ -460,17 +430,8 @@ extra:[
 "• מהווה בערך 78% מהאטמוספרה.",
 "• חיוני ליצירת חלבונים בגוף.",
 "• משמש לייצור דשנים בחקלאות."
-],
-features:{
-gas:true,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+]
 },
-
-
 {
 name:"חמצן",
 symbol:"O",
@@ -480,36 +441,19 @@ extra:[
 "• מאפשר תהליכי בעירה.",
 "• מהווה חלק ממולקולת המים.",
 "• חיוני לרוב בעלי החיים."
-],
-features:{
-gas:true,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
-
+]
 },
 {
 name:"פלואור",
 symbol:"F",
 number:9,
-summary:"יסוד מקבוצת ההלוגנים, המשמש בעיקר בתרכובות כמו משחות שיניים.",
+summary:"יסוד מקבוצת ההלוגנים, המשמש בתרכובות להגנה על השיניים.",
 extra:[
 "• גז צהבהב-ירקרק בטמפרטורת החדר.",
 "• פעיל מאוד מבחינה כימית.",
-"• יוני פלואור בכמות מתאימה מסייעים לחיזוק השיניים."
-],
-features:{
-gas:true,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• משולב במשחות שיניים לחיזוק האמייל."
+]
 },
-
-
 {
 name:"ניאון",
 symbol:"Ne",
@@ -517,940 +461,582 @@ number:10,
 summary:"גז אציל המשמש בשלטי תאורה צבעוניים.",
 extra:[
 "• כמעט שאינו מגיב עם חומרים אחרים.",
-"• מפיק אור כתום-אדמדם כאשר מעבירים בו זרם חשמלי.",
+"• מפיק אור כתום-אדמדם במעבר זרם חשמלי.",
 "• חסר צבע בטבע."
-],
-features:{
-gas:true,
-metal:false,
-body:false,
-magnet:false,
-technology:true
-}
+]
 },
-
-
 {
 name:"נתרן",
 symbol:"Na",
 number:11,
-summary:"מתכת המרכיבה יחד עם כלור את מלח הבישול.",
+summary:"מתכת רכה המרכיבה יחד עם כלור את מלח הבישול.",
 extra:[
-"• מתכת רכה מאוד.",
+"• מתכת רכה מאוד שניתן לחתוך בסכין.",
 "• חשוב לפעילות עצבים ושרירים בגוף.",
-"• בטבע נמצא בדרך כלל בתרכובות."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:false
-}
+"• מגיב בעוצמה רבה במגע עם מים."
+]
 },
-
-
 {
 name:"מגנזיום",
 symbol:"Mg",
 number:12,
-summary:"מתכת קלה ויסוד חשוב בגוף האדם.",
+summary:"מתכת קלה הבוערת באור לבן וחזק, ויסוד חשוב בגוף.",
 extra:[
-"• משתתף בתהליכים הקשורים לשרירים ולעצבים.",
-"• בוער באור לבן וחזק.",
-"• משמש לייצור סגסוגות קלות."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:false
-}
+"• משתתף בתהליכים הקשורים לשרירים.",
+"• בוער באור לבן ומסנוור.",
+"• משמש לייצור סגסוגות קלות לתעופה."
+]
 },
-
-
 {
 name:"אלומיניום",
 symbol:"Al",
 number:13,
-summary:"מתכת קלה המשמשת במוצרים רבים בחיי היום-יום.",
+summary:"מתכת קלה ונפוצה המשמשת במוצרים רבים ביום-יום.",
 extra:[
-"• אינו מחליד בקלות בגלל שכבת מגן שנוצרת עליו.",
+"• אינו מחליד בקלות עקב שכבת חמצון מגנה.",
 "• משמש לייצור פחיות ונייר כסף.",
-"• נפוץ מאוד בתעשיית המטוסים."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• נפוץ מאוד בתעשיית המטוסים והבנייה."
+]
 },
-
-
 {
 name:"צורן",
 symbol:"Si",
 number:14,
-summary:"יסוד חשוב בתעשיית האלקטרוניקה.",
+summary:"יסוד חיוני בתעשיית האלקטרוניקה ושבבי המחשב.",
 extra:[
 "• נמצא בכמויות גדולות בחול ובסלעים.",
-"• משמש לייצור שבבי מחשב ופאנלים סולריים.",
-"• בעל תכונות ביניים בין מתכת לאל-מתכת."
-],
-features:{
-gas:false,
-metal:false,
-body:false,
-magnet:false,
-technology:true
-}
+"• משמש לייצור שבבים ופאנלים סולריים.",
+"• מוליך-למחצה מרכזי בעולם הטכנולוגיה."
+]
 },
-
-
 {
 name:"זרחן",
 symbol:"P",
 number:15,
-summary:"יסוד חשוב בגוף האדם ובחקלאות.",
+summary:"יסוד חיוני לבניית עצמות, שיניים ותהליכי אנרגיה.",
 extra:[
-"• נמצא בעצמות ובשיניים.",
-"• משמש לייצור דשנים.",
-"• מופיע במספר צורות שונות."
-],
-features:{
-gas:false,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• נמצא ברקמות חיים ובעצמות.",
+"• משמש בתעשיית הדשנים והגפרורים.",
+"• מופיע במספר צורות (אלוטרופים) בטבע."
+]
 },
-
-
 {
 name:"גופרית",
 symbol:"S",
 number:16,
-summary:"יסוד צהוב הנמצא בטבע ומשמש בתעשייה.",
+summary:"יסוד אל-מתכתי צהוב הנמצא בטבע ומשמש בתעשייה.",
 extra:[
-"• אינה מתכת.",
-"• משתתפת ביצירת תרכובות בגוף.",
-"• משמשת לייצור חומרים כימיים."
-],
-features:{
-gas:false,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• מוצק בעל צבע צהוב בולט.",
+"• משתתף ביצירת חומצות ותרכובות אורגניות.",
+"• קשור לתהליכים וולקניים בטבע."
+]
 },
-
-
 {
 name:"כלור",
 symbol:"Cl",
 number:17,
-summary:"יסוד המשמש בעיקר לחיטוי מים.",
+summary:"גז ירקרק המשמש לחיטוי מים ובתרכובות שונות.",
 extra:[
-"• גז בעל צבע צהוב-ירקרק.",
+"• גז בעל צבע צהוב-ירקרק וריח חריף.",
 "• חלק ממלח הבישול יחד עם נתרן.",
-"• משמש בבריכות שחייה ובטיפול במים."
-],
-features:{
-gas:true,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• משמש לטיהור מי בריכות שחייה."
+]
 },
-
-
 {
 name:"ארגון",
 symbol:"Ar",
 number:18,
-summary:"גז אציל המשמש בעיקר בנורות ובתהליכים תעשייתיים.",
+summary:"גז אציל שקט ויציב המשמש בנורות ובתהליכים תעשייתיים.",
 extra:[
-"• כמעט שאינו מגיב עם יסודות אחרים.",
-"• חסר צבע וחסר ריח.",
-"• משמש גם בריתוך מתכות."
-],
-features:{
-gas:true,
-metal:false,
-body:false,
-magnet:false,
-technology:true
-}
+"• מהווה כמעט אחוז אחד מהאטמוספרה.",
+"• חסר צבע, ריח וטעם לחלוטין.",
+"• מנוצל ליצירת סביבה אל-אוויר בריתכות."
+]
 },
-
-
 {
 name:"אשלגן",
 symbol:"K",
 number:19,
-summary:"מתכת החשובה לתפקוד תאי הגוף.",
+summary:"מתכת חיונית לתפקוד תאי הגוף ומאזן הנוזלים.",
 extra:[
-"• חיוני לפעילות עצבים ושרירים.",
-"• משמש גם בדשנים.",
-"• בטבע נמצא בתרכובות."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:false
-}
+"• חיוני לפעילות תקינה של עצבים ושרירים.",
+"• משמש כרכיב מרכזי בדשנים חקלאיים.",
+"• קל מאוד ופעיל כימית."
+]
 },
-
-
 {
 name:"סידן",
 symbol:"Ca",
 number:20,
-summary:"יסוד חשוב בבניית עצמות ושיניים.",
+summary:"יסוד חיוני המוכר בעיקר בחיזוק עצמות ושיניים.",
 extra:[
-"• מתכת הנמצאת בטבע בתרכובות.",
-"• חשוב לפעילות תקינה של שרירים.",
-"• נמצא במוצרי חלב ובמזונות נוספים."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:false
-}
+"• מתכת פעילה הנמצאת בתרכובות בטבע.",
+"• חיוני לקרישת דם ולתפקוד שרירים.",
+"• מצוי בשפע במוצרי חלב ובירקות ירוקים."
+]
 },
- {
+{
 name:"טיטניום",
 symbol:"Ti",
 number:22,
-summary:"מתכת חזקה וקלה המשמשת בתעופה וברפואה.",
+summary:"מתכת חזקה במיוחד וקלה שעמידה בפני קורוזיה.",
 extra:[
-"• חזקה מאוד ביחס למשקל שלה.",
-"• עמידה בפני חלודה.",
-"• משמשת גם בשתלים רפואיים."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• בעלת יחס חוזק-למשקל מהגבוהים בטבע.",
+"• משמשת בשתלים רפואיים ובחלליות.",
+"• עמידה לחלוטין בפני חלודה."
+]
 },
-
-
 {
 name:"כרום",
 symbol:"Cr",
 number:24,
-summary:"מתכת המשמשת לציפויים ולייצור פלדת אל-חלד.",
+summary:"מתכת מבריקה המעניקה הגנה מפני חלודה וציפויים יפים.",
 extra:[
-"• מעניק ברק לחלקי מתכת.",
-"• מסייע בהגנה מפני חלודה.",
-"• משמש בתעשיית הרכב."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• יוצר שכבת מגן מבריקה על גבי פלדה.",
+"• משמש לייצור פלדת אל-חלד (נירוסטה).",
+"• בעל עמידות גבוהה לשחיקה."
+]
 },
-
-
 {
 name:"מנגן",
 symbol:"Mn",
 number:25,
-summary:"מתכת המשמשת בעיקר בייצור פלדה.",
+summary:"מתכת חיונית לחיזוק סגסוגות פלדה ותעשיית המתכת.",
 extra:[
-"• מוסיפים אותו לפלדה כדי לחזק אותה.",
-"• נמצא בכמויות קטנות גם בגוף האדם.",
-"• מתכת אפורה-ורדרדה."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:true
-}
+"• משפר משמעותית את הקשיחות של פלדה.",
+"• מעורב בכמויות מזעריות בתהליכי אנרגיה בגוף.",
+"• מופיע בצבע אפור-כסוף."
+]
 },
-
-
 {
 name:"ברזל",
 symbol:"Fe",
 number:26,
-summary:"מתכת חשובה לבנייה ולגוף האדם.",
+summary:"המתכת השימושית ביותר באנושות ומרכיב קריטי בדם.",
 extra:[
-"• נמשך למגנט.",
-"• נמצא בהמוגלובין שבדם.",
-"• משמש לייצור פלדה ומבנים."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:true,
-technology:true
-}
+"• נמשך היטב למגנט.",
+"• מרכיב מרכזי בהמוגלובין שנושא חמצן בגוף.",
+"• בסיס מרכזי לבניית תשתיות ופלדה."
+]
 },
-
-
 {
 name:"קובלט",
 symbol:"Co",
 number:27,
-summary:"מתכת המשמשת בסוללות וביצירת צבעים.",
+summary:"מתכת מגנטית המשמשת בסוללות מתקדמות וצבעים.",
 extra:[
-"• אחת המתכות הנמשכות למגנט.",
-"• תרכובות שלו יוצרות צבע כחול.",
-"• משמש בסוללות נטענות."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:true,
-technology:true
-}
+"• נמשכת למגנט בדומה לברזל.",
+"• משמשת בתרכובות ליצירת צבע כחול עמוק.",
+"• רכיב מפתח בסוללות נטענות חזקות."
+]
 },
-
-
 {
 name:"ניקל",
 symbol:"Ni",
 number:28,
-summary:"מתכת המשמשת במטבעות ובפלדת אל-חלד.",
+summary:"מתכת עמידה בפני חלודה המשמשת במטבעות ובפלדה.",
 extra:[
-"• עמיד בפני חלודה.",
-"• נמשך למגנט.",
-"• משמש גם בציפוי מתכות."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:true,
-technology:true
-}
+"• נמשכת למגנט.",
+"• משמשת בייצור מטבעות כסף וציפויים.",
+"• עמידה בפני תנאי סביבה קשים."
+]
 },
-
-
 {
 name:"נחושת",
 symbol:"Cu",
 number:29,
-summary:"מתכת מצוינת להולכת חשמל.",
+summary:"מתכת בעלת גוון אדמדם-כתום ומוליכות חשמלית מעולה.",
 extra:[
-"• צבעה אדמדם-כתום.",
-"• משמשת בחוטי חשמל.",
-"• אחת המתכות שהאדם הקדום השתמש בהן."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:true
-}
+"• מוליכה מצוינת של חשמל וחום.",
+"• משמשת בחוטי חשמל ובמנועים.",
+"• אחת המתכות הראשונות שהאדם גילה."
+]
 },
-
-
 {
 name:"אבץ",
 symbol:"Zn",
 number:30,
-summary:"מתכת המשמשת להגנה על מתכות מפני חלודה.",
+summary:"מתכת המגנה על ברזל מפני חלודה בתהליך גלוון.",
 extra:[
-"• משמש בתהליך הנקרא גלוון.",
-"• חשוב בכמויות קטנות בגוף האדם.",
-"• נמצא בסוללות מסוימות."
-],
-features:{
-gas:false,
-metal:true,
-body:true,
-magnet:false,
-technology:true
-}
+"• משמשת לציפוי מגן למניעת קורוזיה.",
+"• חיונית לתפקוד תקין של מערכת החיסון.",
+"• משמשת בסוגי סוללות שונים."
+]
 },
-
-
 {
 name:"ברום",
 symbol:"Br",
 number:35,
-summary:"יסוד נוזלי מקבוצת ההלוגנים.",
+summary:"יסוד הלוגני שהוא נוזל אדום-חום בטמפרטורת החדר.",
 extra:[
-"• אחד היסודות הבודדים שהוא נוזל בטמפרטורת החדר.",
-"• צבעו אדום-חום.",
-"• משמש בתעשייה הכימית."
-],
-features:{
-gas:false,
-metal:false,
-body:false,
-magnet:false,
-technology:true
-}
+"• אחד משני היסודות היחידים שהם נוזל בתנאי החדר.",
+"• בעל אדים אדמדמים וריח חריף.",
+"• משמש בתעשיות מעכבי בעירה וחומרי הדברה."
+]
 },
-
-
 {
 name:"כסף",
 symbol:"Ag",
 number:47,
-summary:"מתכת יקרה המשמשת לתכשיטים ולמוצרים טכנולוגיים.",
+summary:"מתכת יקרה בעלת מוליכות החשמל הגבוהה ביותר.",
 extra:[
-"• מוליך חשמל מצוין.",
-"• בעל ברק מתכתי חזק.",
-"• שימש בעבר לייצור מטבעות."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• מוליך החשמל והחום הטוב ביותר מכל היסודות.",
+"• משמש בתכשיטים וברכיבים אלקטרוניים רגישים.",
+"• בעל ברק לבן ומרהיב."
+]
 },
-
-
 {
 name:"יוד",
 symbol:"I",
 number:53,
-summary:"יסוד חשוב בגוף האדם ובתחום הרפואה.",
+summary:"יסוד מוצק כהה החיוני לפעילות בלוטת התריס.",
 extra:[
-"• חיוני לפעילות תקינה של בלוטת התריס.",
-"• צבעו כהה במצב מוצק.",
-"• משמש לחיטוי."
-],
-features:{
-gas:false,
-metal:false,
-body:true,
-magnet:false,
-technology:false
-}
+"• הופך במריחה ישירה או חימום לאדים סגולים.",
+"• משמש כחומר חיטוי רפואי לפצעים.",
+"• חיוני להתפתחות תקינה בגוף האדם."
+]
 },
-
-
 {
 name:"טונגסטן",
 symbol:"W",
 number:74,
-summary:"מתכת חזקה מאוד העמידה לחום גבוה.",
+summary:"מתכת בעלת נקודת ההתכה הגבוהה ביותר מכל המתכות.",
 extra:[
-"• בעלת נקודת התכה גבוהה מאוד.",
-"• משמשת בכלי חיתוך חזקים.",
-"• שימשה בעבר בחוטי להט בנורות."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• עמידה בטמפרטורות קיצוניות מבלי להשתנות.",
+"• משמשת בחוטי להט ובכלי חיתוך מפלדה.",
+"• כבדה וקשה במיוחד."
+]
 },
-
-
 {
 name:"פלטינה",
 symbol:"Pt",
 number:78,
-summary:"מתכת יקרה המשמשת בתכשיטים ובתעשייה.",
+summary:"מתכת אצילה ויקרה המשמשת כזרז בתעשייה ובתכשיטים.",
 extra:[
-"• עמידה מאוד בפני תגובות כימיות.",
-"• משמשת כזרז בתהליכים כימיים.",
-"• בעלת צבע לבן-כסוף."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• עמידה מאוד בפני חמצון וחומרים קורוזיביים.",
+"• משמשת בממירים קטליטיים ברכבים.",
+"• בעלת מראה כסוף-לבן יוקרתי."
+]
 },
-
-
 {
 name:"זהב",
 symbol:"Au",
 number:79,
-summary:"מתכת יקרה בעלת צבע צהוב וברק מיוחד.",
+summary:"מתכת אצילה ויקרה שאינה מחלידה לעולם.",
 extra:[
-"• כמעט שאינה מחלידה.",
-"• משמשת בתכשיטים וגם באלקטרוניקה.",
-"• ניתנת לריקוע ליריעות דקות מאוד."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• בעלת צבע צהוב זוהר שאינו מאבד ברק.",
+"• ניתנת לריקוע אינסופי כמעט לחוטים או עלים דקים.",
+"• משמשת כתכשיט וכבסיס לערך כלכלי."
+]
 },
-
-
 {
 name:"כספית",
 symbol:"Hg",
 number:80,
-summary:"מתכת נוזלית בטמפרטורת החדר.",
+summary:"המתכת היחידה שהיא נוזל בטמפרטורת החדר.",
 extra:[
-"• אחת המתכות היחידות שהיא נוזל בטמפרטורת החדר.",
-"• שימשה בעבר במדחומים.",
-"• רעילה ולכן השימוש בה מוגבל."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
+"• מתכת כסופה הנוזלת בחום החדר.",
+"• שימשה בעבר במדחומי חום.",
+"• רעילה מאוד בחשיפה ממושכת לאדים שלה."
+]
 },
-
-
 {
 name:"עופרת",
 symbol:"Pb",
 number:82,
-summary:"מתכת כבדה המשמשת בעיקר במצברים.",
+summary:"מתכת כבדה וצפופה המגנה מפני קרינה.",
 extra:[
-"• בעלת צפיפות גבוהה.",
-"• מגינה מקרינת רנטגן.",
-"• יש להיזהר מחשיפה ממושכת אליה."
-],
-features:{
-gas:false,
-metal:true,
-body:false,
-magnet:false,
-technology:true
-}
-
-}
-
+"• בעלת משקל סגולי וצפיפות גבוהים במיוחד.",
+"• משמשת בסיכוך נגד קרינת רנטגן ובמצברים.",
+"• רכה יחסית וניתנת לעיצוב בקלות."
+]
 ];
- // =========================
-// חלק 3א - מנגנון המשחק המתוקן
-// =========================
 
-// שאלות זיהוי קונקרטיות
-// השאלות מבוססות על ידע ברור ולא על קטגוריות כלליות
+// =========================
+// מאגר שאלות מתואם עם כרטיסי המידע
+// =========================
 
 const questions = [
-
 {
-text:"האם היסוד הוא אחד משלושת הגזים העיקריים באוויר שאנחנו נושמים (חנקן, חמצן או ארגון)?",
-symbols:["N","O","Ar"]
-},
-
-{
-text:"האם היסוד הוא הגז שהגוף שלנו צריך כדי לנשום?",
-symbols:["O"]
-},
-
-{
-text:"האם היסוד משמש למילוי בלוני גז מרחפים?",
+text:"האם היסוד הוא גז קל משקל שבלעדיו בלונים אינם יכולים להתרחף כלפי מעלה?",
 symbols:["He"]
 },
-
 {
-text:"האם היסוד משמש בשלטי ניאון זוהרים?",
+text:"האם היסוד הוא גז אציל שמייצר הבזקי אור צבעוניים כאשר מעבירים דרכו זרם חשמלי בשלטי תאורה?",
 symbols:["Ne"]
 },
-
 {
-text:"האם היסוד משמש למילוי נורות חשמל?",
-symbols:["Ar"]
+text:"האם היסוד משתייך למשפחת המתכות הקלות ביותר ונמצא בשימוש נרחב בסוללות נטענות?",
+symbols:["Li"]
 },
-
 {
-text:"האם היסוד משמש לייצור תכשיטים יקרים?",
-symbols:["Au","Ag","Pt"]
+text:"האם היסוד הוא מתכת חזקה אך קלה שמתאפיינת בשקיפות מסוימת לקרני רנטגן?",
+symbols:["Be"]
 },
-
 {
-text:"האם היסוד שימש או משמש לייצור מטבעות?",
-symbols:["Au","Ag","Cu","Ni"]
+text:"האם היסוד מעורב בייצור חומרי זכוכית עמידים במיוחד בפני חום?",
+symbols:["B"]
 },
-
 {
-text:"האם צבעו הטבעי של היסוד צהוב וזהו הזהב המוכר מתכשיטים?",
-symbols:["Au"]
+text:"האם היסוד מהווה את אבן הבונה של מולקולות אורגניות ומופיע בטבע גם כיהלום קשה?",
+symbols:["C"]
 },
-
 {
-text:"האם צבעו הטבעי של היסוד לבן-כסוף והוא מוליך החשמל הטוב ביותר?",
-symbols:["Ag"]
+text:"האם היסוד הוא גז שמהווה את החלק הארי (הרוב המוחלט) מנפח האוויר באטמוספרה?",
+symbols:["N"]
 },
-
 {
-text:"האם היסוד הוא מתכת לבנה-כסופה המשמשת גם כזרז בממירים קטליטיים?",
-symbols:["Pt"]
+text:"האם היסוד הוא גז חיוני ביותר המאפשר תהליכי בעירה וקיומם של יצורים חיים?",
+symbols:["O"]
 },
-
 {
-text:"האם היסוד משמש בסוללות נטענות?",
-symbols:["Li","Co","Ni"]
+text:"האם היסוד הוא גז פעיל מאוד מבחינה כימית שמשולב בדרך כלל במוצרים לשמירה על השיניים?",
+symbols:["F"]
 },
-
 {
-text:"האם היסוד הוא מרכיב עיקרי במלח הבישול?",
-symbols:["Na","Cl"]
+text:"האם היסוד הוא מתכת רכה שמגיבה בעוצמה רבה ופיצוצית במגע ישיר עם מים?",
+symbols:["Na"]
 },
-
 {
-text:"האם היסוד חשוב לבניית עצמות ושיניים?",
-symbols:["Ca","F","P"]
-},
-
-{
-text:"האם היסוד משמש לחיטוי מים או פצעים?",
-symbols:["Cl","I","Br"]
-},
-
-{
-text:"האם היסוד משמש בייצור זכוכית מיוחדת?",
-symbols:["Si","B"]
-},
-
-{
-text:"האם היסוד הוא חומר גלם חשוב לחוטי חשמל?",
-symbols:["Cu"]
-},
-
-{
-text:"האם היסוד משמש לציפוי מתכות כדי למנוע חלודה?",
-symbols:["Zn"]
-},
-
-{
-text:"האם היסוד משמש בייצור פלדת אל-חלד?",
-symbols:["Cr","Ni"]
-},
-
-{
-text:"האם היסוד משמש כדלק או מקור אנרגיה?",
-symbols:["H","C"]
-},
-
-
-
-{
-text:"האם היסוד משמש בזיקוקים?",
+text:"האם היסוד הוא מתכת קלה שמתאפיינת בבעירה באור לבן וחזק במיוחד?",
 symbols:["Mg"]
 },
-
 {
-text:"האם היסוד משמש לייצור קופסאות שימורים ונייר כסף?",
+text:"האם היסוד הוא מתכת קלה שממנה נוהגים לייצור פחיות שתייה ונייר אלומיניום שימושי?",
 symbols:["Al"]
 },
-
 {
-text:"האם היסוד הוא מרכיב חשוב בדשנים?",
-symbols:["N","P","K"]
+text:"האם היסוד משמש כחומר גלם מוליך-למחצה הבסיסי ביותר לבניית שבבי מחשב?",
+symbols:["Si"]
 },
-
 {
-text:"האם היסוד נמצא במולקולה שנושאת חמצן בדם?",
+text:"האם היסוד הוא חומר מרכזי שנמצא ברקמות חיים ועצמות, ומשמש גם לייצור דשנים?",
+symbols:["P"]
+},
+{
+text:"האם היסוד הוא מוצק אל-מתכתי בעל גוון צהוב בולט שקשור לתהליכי טבע ודשנים?",
+symbols:["S"]
+},
+{
+text:"האם היסוד הוא גז בעל צבע ירקרק המשמש באופן נפוץ לחיטוי מים בבריכות?",
+symbols:["Cl"]
+},
+{
+text:"האם היסוד הוא גז אציל שקט שנמצא באטמוספרה אך כמעט ואינו יוצר תרכובות?",
+symbols:["Ar"]
+},
+{
+text:"האם היסוד הוא מתכת פעילה שחיונית מאוד לשמירה על תפקוד תאי הגוף והשרירים?",
+symbols:["K"]
+},
+{
+text:"האם היסוד הוא מתכת חשובה שמככבת בבניית רקמות קשות כמו עצמות ושיניים?",
+symbols:["Ca"]
+},
+{
+text:"האם היסוד הוא מתכת קלה וחזקה שעמידה לחלוטין בפני חלודה ומשמשת בשתלים רפואיים?",
+symbols:["Ti"]
+},
+{
+text:"האם היסוד היא מתכת מבריקה ששומרת על פלדה מפני הופעת חלודה (בפלדת אל-חלד)?",
+symbols:["Cr"]
+},
+{
+text:"האם היסוד הוא מתכת שמוסיפים כדי להקשיח ולחזק סגסוגות פלדה שונות?",
+symbols:["Mn"]
+},
+{
+text:"האם היסוד היא מתכת חזקה ונפוצה מאוד שנמשכת היטב למגנט וזורמת בדם?",
 symbols:["Fe"]
 },
-
 {
-text:"האם היסוד נמשך למגנט?",
-symbols:["Fe","Co","Ni"]
+text:"האם היסוד הוא מתכת מגנטית שמשתתפת בייצור סוללות מתקדמות וצבעים כחולים?",
+symbols:["Co"]
 },
-
 {
-text:"האם היסוד הוא מתכת בעלת צבע צהוב אופייני ומשמשת בתכשיטים יוקרתיים?",
-symbols:["Au"]
+text:"ה### היסוד הוא מתכת חסינה לקורוזיה שנמשכת למגנט ומשמשת להטבעת מטבעות?",
+symbols:["Ni"]
 },
-
 {
-text:"האם היסוד הוא מתכת כסופה המשמשת גם במטבעות?",
+text:"האם היסוד הוא מתכת בעלת גוון כתמתם-אדמדם שמשמשת בהצטיינות להולכת חשמל?",
+symbols:["Cu"]
+},
+{
+text:"האם היסוד הוא מתכת שמשמשת בתהליכי ציפוי מגן כדי למנוע מברזל להחליד?",
+symbols:["Zn"]
+},
+{
+text:"האם היסוד הוא חומר הלוגני נדיר שנמצא במצב צבירה נוזלי בטמפרטורת החדר?",
+symbols:["Br"]
+},
+{
+text:"האם היסוד הוא מתכת יקרה שמציגה את מוליכות החשמל הגבוהה ביותר בטבע?",
 symbols:["Ag"]
 },
-
 {
-text:"האם היסוד הוא מתכת לבנה-כסופה המשמשת גם כזרז בתהליכים כימיים?",
+text:"האם היסוד הוא מוצק כהה שהופך באדמה או בחימום לאדים סגולים ומשמש לחיטוי?",
+symbols:["I"]
+},
+{
+text:"האם היסוד הוא מתכת עמידה מאוד שמתאפיינת בנקודת ההתכה הגבוהה ביותר מכולן?",
+symbols:["W"]
+},
+{
+text:"האם היסוד הוא מתכת יקרה ואצילה שמשמשת כזרז כימי מרכזי בממירים של רכבים?",
 symbols:["Pt"]
+},
+{
+text:"האם היסוד הוא מתכת יקרה בעלת צבע צהוב מרהיב שאינה מתחמצנת או מאבדת ברק?",
+symbols:["Au"]
+},
+{
+text:"האם היסוד הוא המתכת היחידה המוכרת לנו שנמצאת במצב נוזלי בתנאי החדר?",
+symbols:["Hg"]
+},
+{
+text:"האם היסוד הוא מתכת כבדה וצפופה במיוחד שמשמשת בין השאר לסיכוך נגד קרינה?",
+symbols:["Pb"]
 }
-
 ];
 
-
 // משתני משחק
+let remaining = [];
+let currentQuestion = null;
+let asked = [];
 
-let remaining=[];
-let currentQuestion=null;
-let asked=[];
-// =========================
-// חלק 3ב - מנוע המשחק, כרטיס מידע ותוצאה
-// =========================
-
-
-// מציאת שאלה טובה שמפרידה בין היסודות שנשארו
-
-function getNextQuestion(){
-
-let available = questions.filter(q=>!asked.includes(q.text));
-
+// מציאת השאלה הטובה ביותר לצמצום אפשרויות
+function getNextQuestion() {
+let available = questions.filter(q => !asked.includes(q.text));
 let best = null;
 let bestDiff = Infinity;
 
+available.forEach(q => {
+let yesCount = remaining.filter(e => q.symbols.includes(e.symbol)).length;
+let noCount = remaining.length - yesCount;
 
-available.forEach(q=>{
-
-let yes = remaining.filter(e=>
-q.symbols.includes(e.symbol)
-).length;
-
-let no = remaining.length - yes;
-
-
-// לא משתמשים בשאלות שלא מפרידות
-
-if(yes>0 && no>0){
-
-let diff=Math.abs(yes-no);
-
-if(diff<bestDiff){
-bestDiff=diff;
-best=q;
+if (yesCount > 0 && noCount > 0) {
+let diff = Math.abs(yesCount - noCount);
+if (diff < bestDiff) {
+bestDiff = diff;
+best = q;
 }
-
 }
-
 });
 
-
 return best;
-
 }
 
-
-
 // התחלת משחק
-
-function startGame(){
-
-remaining=[...elements];
-asked=[];
+function startGame() {
+remaining = [...elements];
+asked = [];
 
 document.getElementById("start").classList.remove("active");
 document.getElementById("game").classList.add("active");
 
 showQuestion();
-
 }
-
-
 
 // הצגת שאלה
-
-function showQuestion(){
-
-if(remaining.length===1){
-
+function showQuestion() {
+if (remaining.length === 1) {
 showResult(remaining[0]);
 return;
-
 }
 
+let q = getNextQuestion();
 
-let q=getNextQuestion();
-
-
-if(!q){
-
+if (!q) {
 showResult(remaining[0]);
 return;
-
 }
 
-
-currentQuestion=q;
-
+currentQuestion = q;
 asked.push(q.text);
 
-
-document.getElementById("question").innerHTML=q.text;
-
-document.getElementById("remaining").innerHTML=
-"נשארו "+remaining.length+" אפשרויות";
-
+document.getElementById("question").innerHTML = q.text;
+document.getElementById("remaining").innerHTML = "נשארו " + remaining.length + " אפשרויות לבחירה";
 }
 
-
-
-// תשובת כן/לא
-
-function answer(answer){
-
-
-remaining=remaining.filter(e=>
-
-currentQuestion.symbols.includes(e.symbol)===answer
-
+// מענה על שאלה
+function answer(isYes) {
+remaining = remaining.filter(e =>
+currentQuestion.symbols.includes(e.symbol) === isYes
 );
-
-
 showQuestion();
-
 }
 
-
-
-// הצגת כרטיס היסוד הסופי
-
-function showResult(element){
-
-
+// הצגת תוצאה סופית
+function showResult(element) {
 document.getElementById("game").classList.remove("active");
-
 document.getElementById("result").classList.add("active");
 
+document.getElementById("found").innerHTML = `${element.name} (${element.symbol})`;
 
-document.getElementById("found").innerHTML=
-`
-${element.name} (${element.symbol})
-`;
-
-
-document.getElementById("foundInfo").innerHTML=
-
-`
-
-<p><b>מספר אטומי:</b> ${element.number}</p>
-
-<p>${element.summary}</p>
-
-<h3>מידע נוסף:</h3>
-
-<p>
+document.getElementById("foundInfo").innerHTML = `
+<p style="font-size: 17px;"><b>מספר אטומי:</b> ${element.number}</p>
+<p style="font-size: 17px; line-height: 1.5;">${element.summary}</p>
+<h3 style="color: #b45309; margin-top: 20px;">מידע נוסף:</h3>
+<p style="line-height: 1.6;">
 ${element.extra.join("<br>")}
 </p>
-
-<p style="margin-top:20px;font-weight:bold;">
+<p style="margin-top:25px; font-weight:bold; color: var(--text-muted);">
 עריכה: מילכה ברקו גרש
 </p>
-
 `;
-
 }
 
-
-
-// משחק חדש
-
-function resetGame(){
-
+// איפוס משחק
+function resetGame() {
 document.getElementById("result").classList.remove("active");
-
 document.getElementById("game").classList.remove("active");
-
 document.getElementById("start").classList.add("active");
-
 }
 
+// יצירת רשימת היסודות במסך הפתיחה
+function createElementList() {
+let box = document.getElementById("elementsList");
+if (!box) return;
+box.innerHTML = "";
 
-// הצגת רשימת היסודות
-
-function createElementList(){
-
-let box=document.getElementById("elementsList");
-
-if(!box) return;
-
-box.innerHTML="";
-
-
-elements.forEach(e=>{
-
-let item=document.createElement("div");
-
-item.className="element";
-
-item.innerHTML=
-
-`
-<strong>${e.symbol}</strong><br>
-${e.name}
+elements.forEach(e => {
+let item = document.createElement("div");
+item.className = "element";
+item.innerHTML = `
+<strong>${e.symbol}</strong>
+<span>${e.name}</span>
 `;
-
 box.appendChild(item);
-
 });
-
 }
 
+// פתיחת חלון מידע
+function showInfo() {
+let cards = document.getElementById("cards");
+cards.innerHTML = "";
 
-// פתיחת כרטיסי מידע
-
-function showInfo(){
-
-let cards=document.getElementById("cards");
-
-cards.innerHTML="";
-
-
-elements.forEach(e=>{
-
-cards.innerHTML +=
-
-`
-<div class="card">
-
-<h2>${e.name} (${e.symbol})</h2>
-
-<p>${e.summary}</p>
-
-<p>
+elements.forEach(e => {
+cards.innerHTML += `
+<div class="card" style="margin-top:0;">
+<h3 style="color: var(--primary-dark); margin-top:0; font-size: 20px;">${e.name} (${e.symbol}) - מספר אטומי ${e.number}</h3>
+<p style="margin-bottom: 8px;">${e.summary}</p>
+<p style="color: var(--text-muted); font-size: 14px; line-height: 1.4;">
 ${e.extra.join("<br>")}
 </p>
-
 </div>
 `;
-
 });
 
-
-document.getElementById("modal").style.display="flex";
-
+document.getElementById("modal").style.display = "flex";
 }
 
-
-function closeInfo(){
-
-document.getElementById("modal").style.display="none";
-
+// סגירת חלון מידע
+function closeInfo() {
+document.getElementById("modal").style.display = "none";
 }
 
-
-// אתחול
-
+// הרצה ראשונית
 createElementList();
-
-
 </script>
 
 </body>
