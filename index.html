@@ -623,12 +623,10 @@ features:{ state:"solid", type:"metal", alkali:false, noble:false, magnet:false,
 ];
 
 // =========================
-// שאלות מיפוי גסות בסדר החדש + שאלות זיהוי מדויקות
+// הגדרת השאלות הראשיות בסדר קבוע מראש והשאלות הפרטניות
 // =========================
 
-const questions = [
-
-// שלוש השאלות הראשונות לפי ההדרגה שביקשת
+const fixedInitialQuestions = [
 {
 text: "האם היסוד הוא גז בטמפרטורת החדר?",
 checker: e => e.features.state === "gas"
@@ -639,15 +637,15 @@ checker: e => e.features.state === "liquid"
 },
 {
 text: "האם היסוד הוא מתכת?",
-checker: e => e.features.type === "metal"
+checker: e => e.features.type === "metal" || e.features.type === "metalloid"
 },
-// השאלה הרביעית לבקשתך - האם אלקלית
 {
 text: "האם היסוד שייך למשפחת המתכות האלקליות? (טור ראשון משמאל בטבלה המחזורית)",
 checker: e => e.features.alkali === true
-},
+}
+];
 
-// שאלות סינון נוספות להמשך המשחק
+const generalQuestions = [
 {
 text: "האם היסוד שייך למשפחת הגזים האצילים?",
 checker: e => e.features.noble === true
@@ -659,9 +657,10 @@ checker: e => e.features.magnet === true
 {
 text: "האם היסוד קשור באופן מרכזי לתעשייה טכנולוגית, שבבים, אלקטרוניקה או סוללות?",
 checker: e => e.features.tech === true
-},
+}
+];
 
-// שאלות זיהוי פרטניות ומדויקות
+const specificQuestions = [
 {
 text: "האם זהו גז קל מהאוויר, משמש למילוי בלונים פורחים?",
 checker: e => e.symbol === "He"
@@ -802,7 +801,6 @@ checker: e => e.symbol === "Hg"
 text: "האם היסוד הוא מתכת כבדה וצפופה במיוחד שמשמשת בין השאר לסיכוך נגד קרינה?",
 checker: e => e.symbol === "Pb"
 }
-
 ];
 
 
@@ -812,11 +810,24 @@ let remaining = [];
 let currentQuestion = null;
 let asked = [];
 
-// מציאת שאלה אופטימלית שמחלקת את הקבוצה בצורה שווה ככל האפשר (מינימום הפרש)
+// בחירת השאלה הבאה בהתאם להיררכיה הנוקשה של השאלות הראשונות
 
 function getNextQuestion(){
 
-let available = questions.filter(q => !asked.includes(q.text));
+// שלב 1: מעבר סדרתי על ארבע השאלות הראשונות שנקבעו מראש אם טרם נשאלו
+for(let q of fixedInitialQuestions){
+if(!asked.includes(q.text)){
+let yesCount = remaining.filter(e => q.checker(e)).length;
+let noCount = remaining.length - yesCount;
+// נציג את השאלה רק אם היא רלוונטית לקבוצה הנוכחית (כלומר מחלקת אותה או לפחות רלוונטית לחלק מהאפשרויות)
+if(yesCount > 0 && noCount > 0){
+return q;
+}
+}
+}
+
+// שלב 2: שאר השאלות (כלליות ופרטניות)
+let available = [...generalQuestions, ...specificQuestions].filter(q => !asked.includes(q.text));
 
 let best = null;
 let bestDiff = Infinity;
@@ -825,7 +836,6 @@ available.forEach(q => {
 let yesCount = remaining.filter(e => q.checker(e)).length;
 let noCount = remaining.length - yesCount;
 
-// בודקים שהשאלה אכן מחלקת את הקבוצה ושלא נשארת ריקה באחד הצדדים
 if(yesCount > 0 && noCount > 0){
 let diff = Math.abs(yesCount - noCount);
 if(diff < bestDiff){
@@ -835,7 +845,6 @@ best = q;
 }
 });
 
-// אם לא נמצאה שאלה חצויה אופטימלית, ניקח כל שאלה פנויה שנשארה
 if(!best && available.length > 0){
 best = available[0];
 }
