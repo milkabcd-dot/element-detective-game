@@ -368,7 +368,7 @@ features:{ state:"solid", type:"metal", alkali:false, noble:false, magnet:false,
 name:"בור", symbol:"B", number:5,
 stateHeb:"מוצק",
 summary:"תרכובות בור משמשות לייצור זכוכית מסוג פיירקס, העמידה בפני זעזועים תרמיים ושינויי טמפרטורה קיצוניים.",
-extra:["• מצב צבירה בטמפרטורת החדר: מוצק","• נמצא בטבע בתרכובות ולא כיסוד חופשי.","• משמש בזכוכית עמידה לחום.","• בעל תכונות בין מתכת לאל-מתכת."],
+extra:["• מצב צבירה בטמפרטורת החדר: מוצק","• נמצא בטבע בתרכובות ולא כיסוד חופשי.","• משמש בזכוכית עמידה לחום.","• בעל תכונות بين מתכת לאל-מתכת."],
 features:{ state:"solid", type:"metalloid", alkali:false, noble:false, magnet:false, tech:true }
 },
 
@@ -623,7 +623,7 @@ features:{ state:"solid", type:"metal", alkali:false, noble:false, magnet:false,
 ];
 
 // =========================
-// הגדרת השאלות הראשיות בסדר קבוע מראש והשאלות הפרטניות
+// הגדרת השאלות הראשיות בסדר קבוע מראש
 // =========================
 
 const fixedInitialQuestions = [
@@ -810,23 +810,22 @@ let remaining = [];
 let currentQuestion = null;
 let asked = [];
 
-// בחירת השאלה הבאה בהתאם להיררכיה הנוקשה של השאלות הראשונות
+// בחירת השאלה הבאה לפי ההיררכיה המבוקשת
 
 function getNextQuestion(){
 
-// שלב 1: מעבר סדרתי על ארבע השאלות הראשונות שנקבעו מראש אם טרם נשאלו
+// 1. מעבר קבוע על ארבע השאלות הראשונות בסדר מדויק
 for(let q of fixedInitialQuestions){
 if(!asked.includes(q.text)){
 let yesCount = remaining.filter(e => q.checker(e)).length;
 let noCount = remaining.length - yesCount;
-// נציג את השאלה רק אם היא רלוונטית לקבוצה הנוכחית (כלומר מחלקת אותה או לפחות רלוונטית לחלק מהאפשרויות)
 if(yesCount > 0 && noCount > 0){
 return q;
 }
 }
 }
 
-// שלב 2: שאר השאלות (כלליות ופרטניות)
+// 2. שאר השאלות (כלליות ופרטניות)
 let available = [...generalQuestions, ...specificQuestions].filter(q => !asked.includes(q.text));
 
 let best = null;
