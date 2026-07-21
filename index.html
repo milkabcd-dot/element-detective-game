@@ -840,16 +840,7 @@ return q;
 }
 }
 
-// שלב 3: שאלת הטכנולוגיה/שבבים (מופיעה רק כאן, רחוק מההתחלה)
-if(!asked.includes(techQuestion.text)){
-let yesCount = remaining.filter(e => techQuestion.checker(e)).length;
-let noCount = remaining.length - yesCount;
-if(yesCount > 0 && noCount > 0){
-return techQuestion;
-}
-}
-
-// שלב 4: מעבר לשאלות פרטניות לפי חלוקה מתמטית מאוזנת
+// שלב 3: מעבר לשאלות פרטניות לפי חלוקה מתמטית מאוזנת (מלבד שאלת הטכנולוגיה שנדחית לסוף)
 let available = [...specificQuestions].filter(q => !asked.includes(q.text));
 
 let best = null;
@@ -868,11 +859,25 @@ best = q;
 }
 });
 
-if(!best && available.length > 0){
-best = available[0];
+if(best){
+return best;
 }
 
-return best;
+// שלב 4: שאלת הטכנולוגיה/שבבים – מופיעה רק כשנשארו מעט אפשרויות ואף שאלה ספציפית אחרת לא נותנת חלוקה
+if(!asked.includes(techQuestion.text)){
+let yesCount = remaining.filter(e => techQuestion.checker(e)).length;
+let noCount = remaining.length - yesCount;
+if(yesCount > 0 && noCount > 0){
+return techQuestion;
+}
+}
+
+// גיבוי אחרון אם משהו התפספס
+if(available.length > 0){
+return available[0];
+}
+
+return null;
 
 }
 
